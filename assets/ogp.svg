@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Michiru Kambara — Portfolio">
+  <rect width="1200" height="630" fill="#FAF6F0"/>
+  <rect x="20" y="20" width="1160" height="590" rx="18" fill="none" stroke="#E0D7CA" stroke-width="2"/>
+  <text x="100" y="150" font-family="Georgia, serif" font-size="26" letter-spacing="10" fill="#C96F4A">PORTFOLIO</text>
+  <text x="96" y="300" font-family="'Hiragino Mincho ProN', 'Noto Serif JP', serif" font-size="96" font-weight="700" fill="#2B2520">神原みちる</text>
+  <text x="100" y="370" font-family="Georgia, serif" font-size="40" fill="#6B6258">Michiru Kambara</text>
+  <text x="100" y="470" font-family="'Hiragino Sans', sans-serif" font-size="30" fill="#6B6258">AI ・ 認知科学 ・ デザイン</text>
+  <text x="100" y="520" font-family="'Hiragino Sans', sans-serif" font-size="24" fill="#6B6258">Human-centered AI for a thoughtful, intentional life</text>
+</svg>
