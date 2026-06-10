@@ -197,12 +197,12 @@ html[lang="en"] .thesis-h { font-family: var(--serif-en); }
 .thesis-lead { color: var(--ink-soft); max-width: 34em; margin: 0 0 var(--s4); }
 
 /* イラスト用ストローク */
-.ill-stroke-accent { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.ill-stroke-blue   { fill: none; stroke: var(--blue);   stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.ill-dot-accent    { fill: var(--accent); }
-.ill-ai            { fill: var(--blue-deep); font-family: var(--serif-en); font-size: 11px; font-weight: 600; text-anchor: middle; }
+.ill-stroke-accent { fill: none; stroke: #C96F4A; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ill-stroke-blue   { fill: none; stroke: #6E8499; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ill-dot-accent    { fill: #C96F4A; }
+.ill-ai            { fill: #56697C; font-family: var(--serif-en); font-size: 11px; font-weight: 600; text-anchor: middle; }
 .ill-flow {
-  fill: none; stroke: var(--blue); stroke-width: 2;
+  fill: none; stroke: #6E8499; stroke-width: 2;
   stroke-dasharray: 2 7; stroke-linecap: round;
   animation: flow 1.4s linear infinite;
 }
@@ -226,10 +226,10 @@ html[lang="en"] .thesis-h { font-family: var(--serif-en); }
   display: grid; place-items: center; padding: var(--s4); overflow: hidden;
 }
 .illus-frame svg { width: 84%; height: auto; overflow: visible; }
-.warm-glow      { fill: var(--accent); opacity: .12; }
-.warm-heart-fill{ fill: var(--accent); opacity: .18; }
-.node-blue      { fill: var(--blue); stroke: none; }
-.ill-orbit      { fill: none; stroke: var(--blue); stroke-width: 1.4; stroke-dasharray: 2 7; opacity: .65; animation: flow 3.2s linear infinite; }
+.warm-glow      { fill: #C96F4A; opacity: .12; }
+.warm-heart-fill{ fill: #C96F4A; opacity: .18; }
+.node-blue      { fill: #6E8499; stroke: none; }
+.ill-orbit      { fill: none; stroke: #6E8499; stroke-width: 1.4; stroke-dasharray: 2 7; opacity: .65; animation: flow 3.2s linear infinite; }
 .photo { margin: 0; }
 .photo:nth-child(2) { transition-delay: .12s; }   /* staggered reveal */
 
@@ -415,12 +415,13 @@ html[lang="en"] .writing-tagline { font-family: var(--serif-en); }
 .deco { position: absolute; z-index: 0; pointer-events: none; }
 .deco svg { display: block; width: 100%; height: 100%; overflow: visible; }
 
-.blob-accent { fill: var(--accent); }
-.blob-blue   { fill: var(--blue); }
-.ring-accent { fill: none; stroke: var(--accent); stroke-width: 1.4; }
-.ring-blue   { fill: none; stroke: var(--blue); stroke-width: 1.4; }
-.dot-accent  { fill: var(--accent); }
-.dot-blue    { fill: var(--blue); }
+/* 直値で指定（一部ブラウザは fill/stroke で var() を解決しないため） */
+.blob-accent { fill: #C96F4A; }
+.blob-blue   { fill: #6E8499; }
+.ring-accent { fill: none; stroke: #C96F4A; stroke-width: 1.4; }
+.ring-blue   { fill: none; stroke: #6E8499; stroke-width: 1.4; }
+.dot-accent  { fill: #C96F4A; }
+.dot-blue    { fill: #6E8499; }
 
 @keyframes floatY {
   0%, 100% { transform: translateY(0); }
@@ -437,16 +438,17 @@ html[lang="en"] .writing-tagline { font-family: var(--serif-en); }
 
 /* hero composition */
 .hero-deco {
-  top: -4%; right: -6%; width: min(48vw, 460px); aspect-ratio: 1; z-index: 0;
+  top: -4%; right: -6%; width: min(48vw, 460px); height: min(48vw, 460px); z-index: 0;
 }
 
 /* section corner accents */
-.deco--tr { top: -40px; right: -50px; width: min(34vw, 280px); aspect-ratio: 1; }
-.deco--bl { bottom: -60px; left: -60px; width: min(36vw, 300px); aspect-ratio: 1; }
+.deco--tr { top: -40px; right: -50px; width: min(34vw, 280px); height: min(34vw, 280px); }
+.deco--bl { bottom: -60px; left: -60px; width: min(36vw, 300px); height: min(36vw, 300px); }
+.footer-deco { height: min(40vw, 320px); }
 
 @media (max-width: 760px) {
-  .hero-deco { width: 62vw; right: -14%; opacity: .9; }
-  .deco--tr, .deco--bl { width: 46vw; }
+  .hero-deco { width: 62vw; height: 62vw; right: -14%; opacity: .9; }
+  .deco--tr, .deco--bl { width: 46vw; height: 46vw; }
 }
 
 /* ===== reveal animation ===== */
