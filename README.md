@@ -41,10 +41,14 @@ mypage/
 | サブ背景 | `#F3ECE2` |
 | テキスト | `#2B2520` |
 | 補助テキスト | `#6B6258` |
-| アクセント | `#C96F4A`（テラコッタ・1色のみ） |
+| アクセント | `#C96F4A`（テラコッタ） |
+| 補助色 | `#6E8499`（くすみブルー・装飾の塗り用） |
 | 罫線 | `#E0D7CA` |
 
 見出し: Noto Serif JP / Source Serif 4 ・ 本文: Zen Kaku Gothic New / Inter（Google Fonts）
+
+### 装飾レイヤー（インラインSVG）
+各セクションに有機ブロブ＋幾何モチーフ（リング・ドット）の装飾SVGを配置（`.deco` クラス）。色は `.blob-accent` / `.blob-blue` などのクラスでCSS変数を参照。`prefers-reduced-motion` でふわふわ浮遊・回転アニメは自動停止。装飾は `aria-hidden`・`pointer-events:none`・本文の背面（`z-index:0`）に固定しているため、可読性と操作性には影響しません。
 
 ## 差し替えガイド
 
