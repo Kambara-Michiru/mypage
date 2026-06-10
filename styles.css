@@ -115,10 +115,31 @@ html[lang="en"] h1, html[lang="en"] h2, html[lang="en"] h3 { font-family: var(--
   font-family: var(--serif-ja); font-size: 1.05rem; margin-bottom: var(--s3);
   padding-bottom: var(--s2); border-bottom: 1px solid var(--line);
 }
+.sub-head {
+  font-family: var(--serif-ja); font-size: .98rem; font-weight: 600;
+  margin: var(--s4) 0 var(--s3); color: var(--accent-deep);
+}
+.mini-head + .sub-head { margin-top: var(--s4); }
 .muted { color: var(--ink-soft); }
+.note { font-size: .88rem; margin-top: var(--s2); max-width: var(--readw); }
 
 /* ===== hero ===== */
 .hero { padding-block: clamp(var(--s7), 14vh, 180px) var(--s7); }
+.hero-goal {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--s2) var(--s3);
+  margin: 0 0 var(--s5); padding-bottom: var(--s4);
+  border-bottom: 1px solid var(--line);
+}
+.hero-goal-label {
+  font-family: var(--serif-en); letter-spacing: .25em; text-transform: uppercase;
+  font-size: .72rem; color: var(--accent);
+}
+.hero-goal-text {
+  font-family: var(--serif-ja); font-size: clamp(1.15rem, 3.5vw, 1.6rem);
+  color: var(--ink); letter-spacing: .03em; line-height: 1.5;
+}
+html[lang="en"] .hero-goal-text { font-family: var(--serif-en); }
+
 .hero-eyebrow {
   font-family: var(--serif-en); letter-spacing: .35em; text-transform: uppercase;
   font-size: .8rem; color: var(--accent); margin: 0 0 var(--s4);
@@ -142,6 +163,13 @@ html[lang="en"] h1, html[lang="en"] h2, html[lang="en"] h3 { font-family: var(--
 .facts div { display: grid; grid-template-columns: 5.5em 1fr; gap: var(--s3); align-items: baseline; }
 .facts dt { color: var(--accent-deep); font-size: .85rem; font-weight: 600; }
 .facts dd { color: var(--ink); }
+
+.thesis { margin-top: var(--s5); padding-top: var(--s4); border-top: 1px dashed var(--line); }
+.thesis-title {
+  font-family: var(--serif-ja); font-size: 1.08rem; line-height: 1.7;
+  margin: 0; max-width: var(--readw);
+}
+html[lang="en"] .thesis-title { font-family: var(--serif-en); }
 
 .record { display: grid; gap: var(--s3); margin-bottom: var(--s5); }
 .record li { display: grid; grid-template-columns: 3.5em 1fr; gap: var(--s3); align-items: baseline; font-size: .95rem; }
@@ -250,10 +278,37 @@ a[data-placeholder] { opacity: .72; }
   padding: var(--s4); text-decoration: none; position: relative;
   transition: border-color .25s, transform .25s;
 }
-.link-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+a.link-card:hover { border-color: var(--accent); transform: translateY(-2px); }
 .lc-label { font-size: .75rem; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); }
 .lc-title { font-weight: 500; }
 .lc-arrow { position: absolute; top: var(--s4); right: var(--s4); color: var(--ink-soft); }
+
+/* グループ化カード（Podcast: LISTEN / Spotify） */
+.link-card--group { cursor: default; }
+.lc-links { display: flex; flex-wrap: wrap; gap: var(--s4); margin-top: var(--s1); }
+.lc-links a {
+  color: var(--accent-deep); text-decoration: none; font-weight: 500; font-size: .92rem;
+  border-bottom: 1px solid transparent; transition: border-color .2s;
+}
+.lc-links a:hover { border-color: var(--accent); }
+
+/* ===== books ===== */
+.book-list {
+  display: grid; gap: var(--s4);
+  border-left: 1px solid var(--line); padding-left: var(--s5);
+  max-width: 40em;
+}
+.book-list li { position: relative; }
+.book-list li::before {
+  content: ""; position: absolute; left: calc(-1 * var(--s5) - 4px); top: .6em;
+  width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+}
+.book-title { display: block; font-family: var(--serif-ja); font-size: 1.05rem; line-height: 1.6; }
+html[lang="en"] .book-title { font-family: var(--serif-en); }
+.book-meta {
+  display: block; margin-top: var(--s1); font-size: .85rem; color: var(--ink-soft);
+  font-family: var(--serif-en); letter-spacing: .02em;
+}
 
 /* ===== writing ===== */
 .writing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s6); }
