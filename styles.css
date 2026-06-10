@@ -175,18 +175,61 @@ html[lang="en"] .hero-goal-text { font-family: var(--serif-en); }
 .facts dt { color: var(--accent-deep); font-size: .85rem; font-weight: 600; }
 .facts dd { color: var(--ink); }
 
-.thesis { margin-top: var(--s5); padding-top: var(--s4); border-top: 1px dashed var(--line); }
-.thesis-title {
-  font-family: var(--serif-ja); font-size: 1.08rem; line-height: 1.7;
-  margin: 0; max-width: var(--readw);
+/* 卒業論文フィーチャー */
+.thesis-feature {
+  margin-top: var(--s6);
+  display: grid; grid-template-columns: minmax(200px, 290px) 1fr;
+  gap: var(--s6); align-items: center;
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+  padding: var(--s5) var(--s6);
 }
-html[lang="en"] .thesis-title { font-family: var(--serif-en); }
+.thesis-art { width: 100%; }
+.thesis-art svg { width: 100%; height: auto; display: block; overflow: visible; }
+.thesis-eyebrow {
+  font-family: var(--serif-en); letter-spacing: .2em; text-transform: uppercase;
+  font-size: .74rem; color: var(--accent);
+}
+.thesis-h {
+  font-family: var(--serif-ja); font-size: clamp(1.2rem, 2.6vw, 1.55rem);
+  line-height: 1.6; margin: var(--s2) 0 var(--s3);
+}
+html[lang="en"] .thesis-h { font-family: var(--serif-en); }
+.thesis-lead { color: var(--ink-soft); max-width: 34em; margin: 0 0 var(--s4); }
+
+/* イラスト用ストローク */
+.ill-stroke-accent { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ill-stroke-blue   { fill: none; stroke: var(--blue);   stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ill-dot-accent    { fill: var(--accent); }
+.ill-ai            { fill: var(--blue-deep); font-family: var(--serif-en); font-size: 11px; font-weight: 600; text-anchor: middle; }
+.ill-flow {
+  fill: none; stroke: var(--blue); stroke-width: 2;
+  stroke-dasharray: 2 7; stroke-linecap: round;
+  animation: flow 1.4s linear infinite;
+}
+@keyframes flow { to { stroke-dashoffset: -18; } }
+
+@media (max-width: 760px) {
+  .thesis-feature { grid-template-columns: 1fr; gap: var(--s4); padding: var(--s4); }
+  .thesis-art { max-width: 230px; margin: 0 auto; }
+}
 
 .record { display: grid; gap: var(--s3); margin-bottom: var(--s5); }
 .record li { display: grid; grid-template-columns: 3.5em 1fr; gap: var(--s3); align-items: baseline; font-size: .95rem; }
 .record-year { font-family: var(--serif-en); color: var(--accent); font-size: .9rem; }
 
-.photo-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 480px)); gap: var(--s4); margin-top: var(--s6); }
+.photo-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); margin-top: var(--s6); align-items: start; }
+
+/* 写真と並ぶイラストフレーム（あたたかいテクノロジー） */
+.illus-frame {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--card); aspect-ratio: 4 / 3;
+  display: grid; place-items: center; padding: var(--s4); overflow: hidden;
+}
+.illus-frame svg { width: 84%; height: auto; overflow: visible; }
+.warm-glow      { fill: var(--accent); opacity: .12; }
+.warm-heart-fill{ fill: var(--accent); opacity: .18; }
+.node-blue      { fill: var(--blue); stroke: none; }
+.ill-orbit      { fill: none; stroke: var(--blue); stroke-width: 1.4; stroke-dasharray: 2 7; opacity: .65; animation: flow 3.2s linear infinite; }
 .photo { margin: 0; }
 .photo:nth-child(2) { transition-delay: .12s; }   /* staggered reveal */
 
@@ -303,11 +346,31 @@ a.link-card:hover { border-color: var(--accent); transform: translateY(-2px); }
 }
 .lc-links a:hover { border-color: var(--accent); }
 
-/* ===== books ===== */
+/* ===== books (click-to-expand) ===== */
+.books-details { border-block: 1px solid var(--line); }
+.books-summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center;
+  gap: var(--s3); padding: var(--s5) 0;
+}
+.books-summary::-webkit-details-marker { display: none; }
+.books-summary .section-num { margin-bottom: 0; }
+.books-summary-main { display: flex; align-items: baseline; gap: var(--s3); flex-wrap: wrap; }
+.books-summary h2 { font-family: var(--serif-ja); font-size: clamp(1.5rem, 3.2vw, 2rem); margin: 0; }
+.books-hint { font-size: .82rem; color: var(--ink-soft); letter-spacing: .04em; }
+.books-chevron {
+  margin-left: auto; flex: none; width: 9px; height: 9px;
+  border-right: 2px solid var(--accent); border-bottom: 2px solid var(--accent);
+  transform: rotate(45deg); transition: transform .3s ease;
+}
+.books-details[open] .books-chevron { transform: rotate(-135deg); }
+.books-summary:hover .books-chevron { border-color: var(--accent-deep); }
+.books-details[open] .book-list { animation: fadeUp .45s ease; padding-bottom: var(--s5); }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
 .book-list {
   display: grid; gap: var(--s4);
   border-left: 1px solid var(--line); padding-left: var(--s5);
-  max-width: 40em;
+  max-width: 40em; margin-top: var(--s2);
 }
 .book-list li { position: relative; }
 .book-list li::before {
@@ -322,6 +385,11 @@ html[lang="en"] .book-title { font-family: var(--serif-en); }
 }
 
 /* ===== writing ===== */
+.writing-tagline {
+  font-family: var(--serif-ja); font-size: clamp(1.25rem, 3vw, 1.65rem);
+  color: var(--ink); margin: var(--s3) 0 0; line-height: 1.5;
+}
+html[lang="en"] .writing-tagline { font-family: var(--serif-en); }
 .writing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s6); }
 .write-list { display: grid; gap: var(--s3); }
 .write-list a { display: inline-block; }
@@ -356,11 +424,11 @@ html[lang="en"] .book-title { font-family: var(--serif-en); }
 
 @keyframes floatY {
   0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-16px); }
+  50%      { transform: translateY(-30px); }
 }
 @keyframes floatY2 {
   0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(12px); }
+  50%      { transform: translateY(24px); }
 }
 @keyframes spinSlow { to { transform: rotate(360deg); } }
 .float-a { animation: floatY 9s ease-in-out infinite; }
