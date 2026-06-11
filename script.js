@@ -131,4 +131,65 @@
       if (e.key === 'Escape' && !lb.hidden) closeLightbox();
     });
   }
+
+  /* ---------- 5. ポインタ追従モーション（A: Heroパララックス / C: カードチルト） ---------- */
+  // 細かいポインタを持つ端末のみ＆モーション低減OFFのときだけ有効化
+  var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  if (finePointer && !reduce) {
+    // --- A. ヒーローのポインタ・パララックス ---
+    var hero = document.querySelector('.hero');
+    var heroDeco = document.querySelector('.hero-deco');
+    if (hero && heroDeco) {
+      var curX = 0, curY = 0, tgtX = 0, tgtY = 0, heroRaf = null;
+      var AMP = 24; // 最大変位(px)
+
+      function heroLoop() {
+        curX += (tgtX - curX) * 0.08;
+        curY += (tgtY - curY) * 0.08;
+        heroDeco.style.transform = 'translate(' + (curX * AMP).toFixed(2) + 'px,' + (curY * AMP).toFixed(2) + 'px)';
+        if (Math.abs(tgtX - curX) > 0.0008 || Math.abs(tgtY - curY) > 0.0008) {
+          heroRaf = requestAnimationFrame(heroLoop);
+        } else {
+          heroRaf = null;
+        }
+      }
+      hero.addEventListener('pointermove', function (e) {
+        var r = hero.getBoundingClientRect();
+        tgtX = ((e.clientX - r.left) / r.width - 0.5) * 2;
+        tgtY = ((e.clientY - r.top) / r.height - 0.5) * 2;
+        if (!heroRaf) heroRaf = requestAnimationFrame(heroLoop);
+      });
+      hero.addEventListener('pointerleave', function () {
+        tgtX = 0; tgtY = 0;
+        if (!heroRaf) heroRaf = requestAnimationFrame(heroLoop);
+      });
+    }
+
+    // --- C. カードのチルト / 磁力 ---
+    var tiltEls = document.querySelectorAll('.link-card, .thesis-feature, .photo-frame, .illus-frame');
+    var MAX_TILT = 5; // deg
+
+    tiltEls.forEach(function (el) {
+      el.classList.add('tilt-target');
+      var raf = null, nx = 0, ny = 0;
+
+      function applyTilt() {
+        raf = null;
+        el.style.transform =
+          'perspective(820px) rotateY(' + (nx * MAX_TILT).toFixed(2) + 'deg) rotateX(' +
+          (-ny * MAX_TILT).toFixed(2) + 'deg) translateY(-4px)';
+      }
+      el.addEventListener('pointermove', function (e) {
+        var r = el.getBoundingClientRect();
+        nx = (e.clientX - r.left) / r.width - 0.5;
+        ny = (e.clientY - r.top) / r.height - 0.5;
+        if (!raf) raf = requestAnimationFrame(applyTilt);
+      });
+      el.addEventListener('pointerleave', function () {
+        if (raf) { cancelAnimationFrame(raf); raf = null; }
+        el.style.transform = '';
+      });
+    });
+  }
 })();
