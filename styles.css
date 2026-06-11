@@ -345,6 +345,7 @@ a.link-card:hover { border-color: var(--accent); transform: translateY(-2px); }
   border-bottom: 1px solid transparent; transition: border-color .2s;
 }
 .lc-links a:hover { border-color: var(--accent); }
+.lc-links--stack { flex-direction: column; gap: var(--s2); align-items: flex-start; }
 
 /* ===== books (click-to-expand) ===== */
 .books-details { border-block: 1px solid var(--line); }
@@ -450,6 +451,12 @@ html[lang="en"] .writing-tagline { font-family: var(--serif-en); }
   .hero-deco { width: 62vw; height: 62vw; right: -14%; opacity: .9; }
   .deco--tr, .deco--bl { width: 46vw; height: 46vw; }
 }
+
+/* ===== pointer-driven motion (A: hero parallax / C: card tilt) ===== */
+.hero-deco { will-change: transform; }
+.tilt-target { will-change: transform; }
+/* チルト対象のうち、transform にトランジションが無いものへ追従の滑らかさを付与 */
+.thesis-feature, .photo-frame, .illus-frame { transition: transform .18s ease; }
 
 /* ===== reveal animation ===== */
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity .7s ease, transform .7s ease; }
