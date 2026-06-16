@@ -89,23 +89,41 @@
   var spyTargets = document.querySelectorAll('main section[id], .site-footer[id]');
   var ABOUT_CLUSTER = ['about', 'path', 'strengths', 'thesis'];
 
-  if (spyLinks.length && spyTargets.length && 'IntersectionObserver' in window) {
+  if (spyLinks.length && spyTargets.length) {
+    var navTrigger = document.querySelector('.nav-trigger');
+    var currentId = null;
+
     function setCurrent(id) {
+      if (id === currentId) return;
+      currentId = id;
       spyLinks.forEach(function (a) {
         a.classList.toggle('is-current', a.getAttribute('href') === '#' + id);
       });
-      var trigger = document.querySelector('.nav-trigger');
-      if (trigger) {
-        trigger.classList.toggle('is-current', ABOUT_CLUSTER.indexOf(id) >= 0);
+      if (navTrigger) {
+        navTrigger.classList.toggle('is-current', ABOUT_CLUSTER.indexOf(id) >= 0);
       }
     }
-    var spy = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) setCurrent(entry.target.id);
-      });
-    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
 
-    spyTargets.forEach(function (t) { spy.observe(t); });
+    // 画面上から35%のラインを越えている最後のセクションを「現在地」とする。
+    // スクロールイベント由来で算出するため、プログラム的スクロールでも確実に追従する。
+    function computeCurrent() {
+      var line = window.scrollY + window.innerHeight * 0.35;
+      var id = spyTargets[0].id;
+      spyTargets.forEach(function (t) {
+        if (t.getBoundingClientRect().top + window.scrollY <= line) id = t.id;
+      });
+      setCurrent(id);
+    }
+
+    var ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () { computeCurrent(); ticking = false; });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    computeCurrent();
   }
 
   /* ---------- 4. 写真ライトボックス ---------- */
