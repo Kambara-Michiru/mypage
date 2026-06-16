@@ -37,6 +37,7 @@
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 16px); }
 body {
   margin: 0;
+  counter-reset: secnum;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans-ja);
@@ -89,6 +90,32 @@ html[lang="en"] h1, html[lang="en"] h2, html[lang="en"] h3 { font-family: var(--
 .nav a:hover { color: var(--ink); }
 .nav a:hover::after { width: 100%; }
 
+/* scrollspy: 現在地のハイライト */
+.nav a.is-current, .nav-trigger.is-current { color: var(--ink); }
+.nav a.is-current::after { width: 100%; }
+
+/* About ドロップダウン */
+.nav-group { position: relative; }
+.nav-trigger { display: inline-flex; align-items: center; gap: 3px; }
+.nav-caret { font-size: .7em; transition: transform .2s ease; }
+.nav-group:hover .nav-caret, .nav-group:focus-within .nav-caret { transform: rotate(180deg); }
+.nav-menu {
+  position: absolute; top: 100%; left: 0; min-width: 13em;
+  display: grid; gap: 2px; padding: var(--s2);
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(43, 37, 32, .10);
+  opacity: 0; visibility: hidden; transform: translateY(4px);
+  transition: opacity .18s ease, transform .18s ease, visibility .18s;
+  z-index: 60;
+}
+.nav-group:hover .nav-menu, .nav-group:focus-within .nav-menu {
+  opacity: 1; visibility: visible; transform: translateY(0);
+}
+.nav-menu a { padding: var(--s2) var(--s3); border-radius: 6px; font-size: .9rem; white-space: nowrap; }
+.nav-menu a::after { display: none; }
+.nav-menu a:hover { background: var(--bg-sub); color: var(--ink); }
+.nav-menu a.is-current { color: var(--accent-deep); background: var(--bg-sub); }
+
 .lang-toggle { display: flex; align-items: center; gap: var(--s1); color: var(--line); }
 .lang-toggle button {
   background: none; border: none; cursor: pointer; font: inherit;
@@ -103,15 +130,20 @@ html[lang="en"] h1, html[lang="en"] h2, html[lang="en"] h3 { font-family: var(--
 .mobile-nav { display: none; }
 
 /* ===== sections ===== */
+/* 背景の交互（hero=1のため about/strengths/work/writing が sub）と
+   セクション番号は位置から自動算出。手作業の採番・クラス付けは不要。 */
 .section { padding-block: var(--s7); position: relative; overflow: hidden; }
-.section--sub { background: var(--bg-sub); }
+.section:nth-of-type(even) { background: var(--bg-sub); }
 .section > .container { position: relative; z-index: 1; }
 .section-head { max-width: var(--readw); margin-bottom: var(--s6); }
 .section-num {
   display: inline-flex; align-items: center; gap: var(--s2);
   font-family: var(--serif-en); font-size: .85rem;
   color: var(--accent); letter-spacing: .25em; margin-bottom: var(--s2);
+  counter-increment: secnum;
 }
+/* 番号は自動採番（01, 02, …）。文書順で footer の連絡先まで連番。 */
+.section-num::after { content: counter(secnum, decimal-leading-zero); }
 /* 番号の前に小さな幾何モチーフ（リング） */
 .section-num::before {
   content: ""; width: 9px; height: 9px; border-radius: 50%;
@@ -177,7 +209,6 @@ html[lang="en"] .hero-goal-text { font-family: var(--serif-en); }
 
 /* 卒業論文フィーチャー */
 .thesis-feature {
-  margin-top: var(--s6);
   display: grid; grid-template-columns: minmax(200px, 290px) 1fr;
   gap: var(--s6); align-items: center;
   background: var(--card); border: 1px solid var(--line); border-radius: 10px;
@@ -198,18 +229,17 @@ html[lang="en"] .thesis-h { font-family: var(--serif-en); }
 .thesis-detail { color: var(--ink); max-width: 34em; margin: 0 0 var(--s4); font-size: .95rem; line-height: 1.8; }
 
 /* 学修・研究の歩み */
-.study { margin-top: var(--s6); max-width: var(--readw); }
+.study { max-width: var(--readw); }
 .study-lead { font-size: 1.08rem; }
 .study p { margin-bottom: var(--s3); line-height: 1.9; }
 
 /* 強み */
-.strengths { margin-top: var(--s6); }
+.strengths { margin-top: 0; }
 .strength-list {
   display: grid; grid-template-columns: 1fr;
   gap: var(--s4); align-items: start;
 }
 @media (min-width: 560px) { .strength-list { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 980px) { .strength-list { grid-template-columns: repeat(4, 1fr); } }
 .strength {
   background: var(--card); border: 1px solid var(--line);
   border-radius: 10px; padding: var(--s4);
@@ -227,17 +257,6 @@ html[lang="en"] .thesis-h { font-family: var(--serif-en); }
     color: var(--accent); font-size: 1.2rem; line-height: 1; pointer-events: none;
   }
 }
-/* バスケのミニ年表 */
-.mini-timeline {
-  list-style: none; display: grid; gap: var(--s1);
-  margin: 0 0 var(--s3); padding: var(--s2) 0;
-  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-}
-.mini-timeline li {
-  display: grid; grid-template-columns: 6em 1fr; gap: var(--s2);
-  align-items: baseline; font-size: .85rem;
-}
-.tl-year { font-family: var(--serif-en); color: var(--accent); font-size: .8rem; white-space: nowrap; }
 .strength-label {
   display: block; font-family: var(--serif-ja); font-weight: 600;
   font-size: 1.02rem; color: var(--accent-deep); margin-bottom: var(--s2);
@@ -361,7 +380,7 @@ html[lang="en"] .strength-label { font-family: var(--serif-en); }
   background: var(--bg-sub); border: 1px solid var(--line);
   border-radius: var(--radius); padding: 2px var(--s2);
 }
-.section--sub .chips li { background: var(--card); }
+.section:nth-of-type(even) .chips li { background: var(--card); }
 .links { margin-top: var(--s3); }
 .links a, .write-list a, .footer-links a {
   color: var(--accent-deep); text-decoration: none; font-weight: 500;
