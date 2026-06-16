@@ -33,7 +33,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Source+Serif+4:ital,opt@0,7..72;1,7..72&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=20260616l" />
+  <link rel="stylesheet" href="styles.css?v=20260616n" />
 </head>
 <body>
   <a class="skip-link" href="#main" data-ja="本文へスキップ" data-en="Skip to content">本文へスキップ</a>
@@ -541,13 +541,13 @@
               <span class="tl-when" data-ja="2025年秋・学園祭" data-en="Fall 2025 · University Festival">2025年秋・学園祭</span>
             </div>
             <div class="tl-body">
-              <h3 data-ja="シラバス Agentic AI システム" data-en="Agentic-AI Syllabus System">シラバス Agentic AI システム</h3>
-              <p data-ja="Tree of Thoughts（ToT）などの推論フレームワークを用いた自律型エージェントによるシラバス検索システム。AIが自律的に推論・改善する学習支援の可能性を探る実験的プロジェクトです。"
-                 data-en="An autonomous-agent syllabus search system using reasoning frameworks such as Tree of Thoughts (ToT) — an experiment in how agentic AI can reason and improve its own search process.">
-                Tree of Thoughts（ToT）などの推論フレームワークを用いた自律型エージェントによるシラバス検索システム。AIが自律的に推論・改善する学習支援の可能性を探る実験的プロジェクトです。
+              <h3 data-ja="シラバス Agentic 時間割作成 AI" data-en="Agentic Timetable-Building AI">シラバス Agentic 時間割作成 AI</h3>
+              <p data-ja="昨年のシラバスRAG（LLMの文章埋め込みで検索意図を反映）に続く発展形。2023年以降のエージェント型AIの進展を踏まえ、LLMを単なる検索補助ではなく能動的な「エージェント」として活用しました。履修希望や興味といった曖昧な要望を解釈し、空きコマや履修要件などの複雑な制約を考慮しながら、学期全体の時間割を自律的に構築・提案するシステムを目指しました。"
+                 data-en="A step beyond last year's syllabus RAG, which used LLM text embeddings to reflect search intent. Building on the rapid rise of agentic AI since 2023, it uses the LLM not as a mere search aid but as an active agent: interpreting vague requests such as course preferences and interests, and autonomously building and proposing a full-semester timetable while accounting for complex constraints like open slots and graduation requirements.">
+                昨年のシラバスRAG（LLMの文章埋め込みで検索意図を反映）に続く発展形。2023年以降のエージェント型AIの進展を踏まえ、LLMを単なる検索補助ではなく能動的な「エージェント」として活用しました。履修希望や興味といった曖昧な要望を解釈し、空きコマや履修要件などの複雑な制約を考慮しながら、学期全体の時間割を自律的に構築・提案するシステムを目指しました。
               </p>
               <ul class="chips" aria-label="技術スタック">
-                <li>Agentic AI</li><li>Tree of Thoughts</li>
+                <li>Agentic AI</li><li>LLM</li><li data-ja="時間割自動生成" data-en="Timetable generation">時間割自動生成</li>
               </ul>
               <p class="links">
                 <a href="https://kyoto-kaira.github.io/assets/docs/NF_2025.pdf" target="_blank" rel="noopener">
@@ -611,6 +611,14 @@
               <p data-ja="AI生成コードの「わかったつもり」をなくし、知識として定着させるターミナルTUIアプリ。"
                  data-en="A terminal TUI app that turns the “I think I get it” feeling about AI-generated code into knowledge that actually sticks.">
                 AI生成コードの「わかったつもり」をなくし、知識として定着させるターミナルTUIアプリ。
+              </p>
+              <p data-ja="&lt;strong class=&quot;po&quot;&gt;課題：バイブコーディングの罠&lt;/strong&gt;わかっていなくても何となく動いてしまうため理解が後回しになり、本人が理解していないコードが増殖する。さらにAIから学べる情報が多すぎて、得たいはずの知識が右から左へ抜けていく——成長の機会がAIに奪われていないか、という問題意識から生まれました。"
+                 data-en="&lt;strong class=&quot;po&quot;&gt;Problem — the trap of &lsquo;vibe coding&rsquo;&lt;/strong&gt;Because things somehow work even when you don&rsquo;t understand them, understanding gets postponed and code you don&rsquo;t actually grasp keeps piling up. And with so much to learn from AI, the knowledge you wanted slips straight through — it began from one worry: is AI quietly taking away our chances to grow?">
+                <strong class="po">課題：バイブコーディングの罠</strong>わかっていなくても何となく動いてしまうため理解が後回しになり、本人が理解していないコードが増殖する。さらにAIから学べる情報が多すぎて、得たいはずの知識が右から左へ抜けていく——成長の機会がAIに奪われていないか、という問題意識から生まれました。
+              </p>
+              <p data-ja="&lt;strong class=&quot;po&quot;&gt;解決策：開発フローの中で学ぶ&lt;/strong&gt;「git commit」と同じ感覚で、自分の書いたコードをその場で“おさらい”。ブラウザを開いてコンテクストを渡す手間を省き、開発中のターミナルだけで完結する「学習と復習への最短アクセス」を提供します。"
+                 data-en="&lt;strong class=&quot;po&quot;&gt;Solution — learning inside the development flow&lt;/strong&gt;With the same feel as &lsquo;git commit,&rsquo; you review your own code on the spot. It removes the hassle of opening a browser to hand over context, offering the shortest path to learning and review — entirely within the terminal you are already coding in.">
+                <strong class="po">解決策：開発フローの中で学ぶ</strong>「git commit」と同じ感覚で、自分の書いたコードをその場で“おさらい”。ブラウザを開いてコンテクストを渡す手間を省き、開発中のターミナルだけで完結する「学習と復習への最短アクセス」を提供します。
               </p>
               <ul class="chips" aria-label="技術スタック">
                 <li>TUI</li>
@@ -860,6 +868,6 @@
     </figure>
   </div>
 
-  <script src="script.js?v=20260616l"></script>
+  <script src="script.js?v=20260616n"></script>
 </body>
 </html>
