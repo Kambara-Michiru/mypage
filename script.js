@@ -84,6 +84,30 @@
     });
   }
 
+  /* ---------- 3b. スクロール連動ナビ（scrollspy） ---------- */
+  var spyLinks = document.querySelectorAll('.nav a[href^="#"], .mobile-nav a[href^="#"]');
+  var spyTargets = document.querySelectorAll('main section[id], .site-footer[id]');
+  var ABOUT_CLUSTER = ['about', 'path', 'strengths', 'thesis'];
+
+  if (spyLinks.length && spyTargets.length && 'IntersectionObserver' in window) {
+    function setCurrent(id) {
+      spyLinks.forEach(function (a) {
+        a.classList.toggle('is-current', a.getAttribute('href') === '#' + id);
+      });
+      var trigger = document.querySelector('.nav-trigger');
+      if (trigger) {
+        trigger.classList.toggle('is-current', ABOUT_CLUSTER.indexOf(id) >= 0);
+      }
+    }
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) setCurrent(entry.target.id);
+      });
+    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+
+    spyTargets.forEach(function (t) { spy.observe(t); });
+  }
+
   /* ---------- 4. 写真ライトボックス ---------- */
   var frames = document.querySelectorAll('.photo-frame');
   var lb = document.getElementById('lightbox');
