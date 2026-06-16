@@ -1,84 +1,78 @@
-# 神原みちる｜Portfolio
+# 神原みちる｜Michiru Kambara
 
-AI・認知科学・デザインを横断する個人ポートフォリオサイト。
-コンセプトは **「書斎の窓辺」** — 紙とインクの落ち着きに、午後の光の暖かさを足す。
+**AI・認知科学・デザインを横断する個人ポートフォリオサイト。**
 
-素の HTML / CSS / JavaScript による静的サイトで、ビルド不要。そのまま GitHub Pages に置けます。
+> 理論からAIの仕組みを学びつつ、人文学としてのAI理解も含めて、テクノロジーと幸せに生きる方法を横断的に模索しています。認知心理学と情報工学のあいだで、学際的に探究中。
 
-## 構成
+🔗 **Live:** _（公開URLを設定したらここに記載）_
+
+---
+
+## プロフィール
+
+- **京都大学 総合人間学部 認知情報学系** 在籍 — 熊田–中島研究室（心理情報学／AIとの意思決定）
+- **2025年秋〜 ワシントン大学** College of Arts & Sciences へ交換留学
+- 卒業研究：**意思決定におけるAIからのアドバイス受容**（人はいつAIの助言を受け入れ、いつ退けるのか）
+- **京都大学人工知能研究会（KaiRA）** 所属（2024〜）— RAG・エージェントAIの実験・実装
+- 競技ディベート（WUDC 世界大会に京都大学代表として出場）／バスケットボール13年
+
+掲載内容（サイト内セクション）:
+
+| セクション | 内容 |
+|---|---|
+| **About** | 自己紹介・写真・卒業論文フィーチャー |
+| **Work** | プロダクト／プロジェクト（ActBuddy, Osarai GO など） |
+| **Media** | 登壇・寄稿・Podcast などの掲載 |
+| **Writing** | note / Medium の記事 |
+| **Books** | 影響を受けた本 |
+| **Contact** | 連絡先・SNS リンク |
+
+---
+
+## このリポジトリについて
+
+このサイトのソースコードです。ビルド不要の静的サイト（素の HTML / CSS / JavaScript）で、そのまま GitHub Pages に置けます。
+
+### ファイル構成
 
 ```
 mypage/
 ├── index.html        # 本体（1ページ・全セクション）
 ├── styles.css        # デザイントークン + スタイル
 ├── script.js         # JA/EN切替・スクロールフェード・モバイルメニュー
-├── assets/           # favicon / OGP
-│   ├── favicon.svg
-│   ├── apple-touch-icon.png
-│   ├── ogp.png       # 1200×630
-│   └── ogp.svg       # OGP編集用ソース
-├── images/           # 写真（差し替え可）
-│   ├── debating_me.jpeg
-│   └── basketball_me.jpeg
-└── pdf/
-    └── kairaNF2025.pdf
+├── assets/           # favicon / OGP（favicon.svg, apple-touch-icon.png, ogp.png/svg）
+├── images/           # debating_me.jpeg（About の写真）
+└── pdf/              # 配布資料（KaiRA会誌 2024/2025・発表スライド）
 ```
 
-## 主な仕様
+### 主な仕様
 
-- **言語切替（JA / EN）**: ヘッダー右上のトグル。各要素に `data-ja` / `data-en` 属性を持たせ、JS で切替＋`<html lang>` も更新。選択は `localStorage` に保存。初回はブラウザ言語から判定。
+- **言語切替（JA / EN）**: `data-ja` / `data-en` 属性を JS で切替え、`<html lang>` も更新。選択は `localStorage` に保存し、初回はブラウザ言語から判定。
 - **レスポンシブ**: モバイルファースト。760px 以下でハンバーガーメニュー。
-- **モーション**: スクロール時の控えめなフェードイン（IntersectionObserver）。`prefers-reduced-motion` を尊重して無効化。
-- **写真（About）**: ホバーでゆっくりズーム＋スタッガード表示。クリックでライトボックス拡大（背景クリック／×ボタン／Escで閉じる、開いている間は背景スクロールをロック）。
-- **卒業論文フィーチャー（About）**: 概念を表すインラインSVGイラスト（人↔AIの助言フロー＋信頼を測る天秤）付きのカード。
-- **影響を受けた本**: ネイティブ `<details>/<summary>` によるクリック開閉（JS不要・キーボード操作対応）。
-- **アクセシビリティ**: セマンティックHTML、skipリンク、`aria-*`、フォーカスリング。
-- **メタ**: OGP / Twitter Card / favicon / apple-touch-icon を設定済み。
+- **モーション**: スクロールに合わせた控えめなフェードイン（IntersectionObserver）。`prefers-reduced-motion` を尊重して無効化。
+- **写真**: ホバーでズーム、クリックでライトボックス拡大（背景クリック／×／Esc で閉じる）。
+- **アクセシビリティ**: セマンティック HTML、skip リンク、`aria-*`、フォーカスリング。
+- **メタ**: OGP / Twitter Card / favicon / apple-touch-icon 設定済み。
 
-## デザイントークン（`styles.css` の `:root`）
+### デザイン
+
+コンセプトは **「書斎の窓辺」** — 紙とインクの落ち着きに、午後の光の暖かさを足す。
+配色・タイポは `styles.css` の `:root`（デザイントークン）で一元管理。
 
 | 役割 | 値 |
 |---|---|
-| ベース | `#FAF6F0` |
-| サブ背景 | `#F3ECE2` |
-| テキスト | `#2B2520` |
-| 補助テキスト | `#6B6258` |
+| ベース／サブ背景 | `#FAF6F0` / `#F3ECE2` |
+| テキスト／補助 | `#2B2520` / `#6B6258` |
 | アクセント | `#C96F4A`（テラコッタ） |
-| 補助色 | `#6E8499`（くすみブルー・装飾の塗り用） |
+| 補助色 | `#6E8499`（くすみブルー） |
 | 罫線 | `#E0D7CA` |
 
 見出し: Noto Serif JP / Source Serif 4 ・ 本文: Zen Kaku Gothic New / Inter（Google Fonts）
+各セクションにはインライン SVG の装飾レイヤー（`.deco`）を配置。`aria-hidden`・`pointer-events:none`・背面固定のため可読性と操作性には影響しません。
 
-### 装飾レイヤー（インラインSVG）
-各セクションに有機ブロブ＋幾何モチーフ（リング・ドット）の装飾SVGを配置（`.deco` クラス）。色は `.blob-accent` / `.blob-blue` などのクラスでCSS変数を参照。`prefers-reduced-motion` でふわふわ浮遊・回転アニメは自動停止。装飾は `aria-hidden`・`pointer-events:none`・本文の背面（`z-index:0`）に固定しているため、可読性と操作性には影響しません。
-
-## 差し替えガイド
-
-### 画像（`images/`）
-| ファイル名 | 用途 | 推奨サイズ |
-|---|---|---|
-| `debating_me.jpeg` | About／ディベート写真 | 横長 4:3（例 1600×1200） |
-| `basketball_me.jpeg` | About／バスケ写真 | 横長 4:3（例 1600×1200） |
-
-同名で上書きすればOK。`index.html` の `width` / `height` 属性も実寸に合わせると CLS を防げます。
-
-### OGP画像（`assets/`）
-`assets/ogp.svg` を編集 →`ogp.png`（1200×630）として書き出して差し替え。
-
-### リンク（プレースホルダ）
-`href="#"` かつ `data-placeholder` が付いた箇所が未確定リンクです。実URLに差し替え、`data-placeholder` 属性を外してください。該当箇所:
-
-- ActBuddy の GitHub
-- LFDA の note / Podcast
-- note（プロフィール・「身体性」記事）
-- Medium 2記事
-- Footer の GitHub / note / Medium
-
-確定済みリンク: KAIRA NF2025 PDF、Osarai GO（GitHub）、LFDA Website、Instagram、Email。
+---
 
 ## ローカルプレビュー
-
-ビルド不要。任意の静的サーバーで:
 
 ```bash
 cd mypage
@@ -88,21 +82,10 @@ python3 -m http.server 4173
 
 ## GitHub Pages へのデプロイ
 
-### 方法A: リポジトリ直下を公開（最も簡単）
+1. GitHub リポジトリとして push（例: `username/mypage` または `username.github.io`）。
+2. **Settings → Pages → Build and deployment → Source** を **Deploy from a branch** に設定。
+3. **Branch** を `main` / `/ (root)` にして **Save**。
+4. 数分後 `https://<username>.github.io/<repo>/` で公開。
 
-1. このディレクトリを GitHub リポジトリとして push（例: `username/mypage`、または `username.github.io`）。
-2. GitHub の **Settings → Pages** を開く。
-3. **Build and deployment** → **Source** を **Deploy from a branch** に設定。
-4. **Branch** を `main` / `/ (root)` にして **Save**。
-5. 数分後、`https://<username>.github.io/<repo>/`（または `https://<username>.github.io/`）で公開されます。
-
-> サブディレクトリ公開（`/<repo>/`）でもすべて相対パス（`styles.css` 等）なので追加設定は不要です。
-> `index.html` 内の `<link rel="canonical">` と OGP の `og:image` URL を実際の公開URLに更新してください。
-
-### 方法B: GitHub Actions
-
-特別なビルドは不要なので方法Aで十分ですが、Actions を使う場合は公式の「Static HTML」ワークフロー（Settings → Pages → Source: GitHub Actions）をそのまま利用できます。
-
----
-
-© 2026 Michiru Kambara
+> すべて相対パスのため、サブディレクトリ公開でも追加設定は不要です。
+> 公開URLを確定したら、`index.html` の `<link rel="canonical">` と OGP の `og:image`（現状 `https://example.github.io/` のプレースホルダ）を実URLに更新してください。

@@ -195,6 +195,33 @@ html[lang="en"] .hero-goal-text { font-family: var(--serif-en); }
 }
 html[lang="en"] .thesis-h { font-family: var(--serif-en); }
 .thesis-lead { color: var(--ink-soft); max-width: 34em; margin: 0 0 var(--s4); }
+.thesis-detail { color: var(--ink); max-width: 34em; margin: 0 0 var(--s4); font-size: .95rem; line-height: 1.8; }
+
+/* 学修・研究の歩み */
+.study { margin-top: var(--s6); max-width: var(--readw); }
+.study-lead { font-size: 1.08rem; }
+.study p { margin-bottom: var(--s3); line-height: 1.9; }
+
+/* 強み */
+.strengths { margin-top: var(--s6); }
+.strength-list {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: var(--s4); align-items: start;
+}
+.strength {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 10px; padding: var(--s4);
+}
+.strength-label {
+  display: block; font-family: var(--serif-ja); font-weight: 600;
+  font-size: 1.02rem; color: var(--accent-deep); margin-bottom: var(--s2);
+}
+html[lang="en"] .strength-label { font-family: var(--serif-en); }
+.strength-claim { font-size: .95rem; margin-bottom: var(--s3); }
+.strength-evidence { font-size: .85rem; color: var(--ink-soft); margin: 0; line-height: 1.75; }
+@media (max-width: 760px) {
+  .strength-list { grid-template-columns: 1fr; }
+}
 
 /* イラスト用ストローク */
 .ill-stroke-accent { fill: none; stroke: #C96F4A; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
