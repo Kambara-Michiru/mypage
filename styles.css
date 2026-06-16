@@ -205,13 +205,39 @@ html[lang="en"] .thesis-h { font-family: var(--serif-en); }
 /* 強み */
 .strengths { margin-top: var(--s6); }
 .strength-list {
-  display: grid; grid-template-columns: repeat(3, 1fr);
+  display: grid; grid-template-columns: 1fr;
   gap: var(--s4); align-items: start;
 }
+@media (min-width: 560px) { .strength-list { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 980px) { .strength-list { grid-template-columns: repeat(4, 1fr); } }
 .strength {
   background: var(--card); border: 1px solid var(--line);
   border-radius: 10px; padding: var(--s4);
 }
+.strength-eyebrow {
+  display: block; font-family: var(--serif-en); letter-spacing: .06em;
+  font-size: .7rem; color: var(--blue-deep); margin-bottom: var(--s1);
+}
+/* 創造する → 表現し、行動する の動線（広い画面で矢印） */
+@media (min-width: 560px) {
+  .strength--flow { position: relative; }
+  .strength--flow::before {
+    content: "→"; position: absolute; top: 50%; left: calc(var(--s4) / -2);
+    transform: translate(-50%, -50%);
+    color: var(--accent); font-size: 1.2rem; line-height: 1; pointer-events: none;
+  }
+}
+/* バスケのミニ年表 */
+.mini-timeline {
+  list-style: none; display: grid; gap: var(--s1);
+  margin: 0 0 var(--s3); padding: var(--s2) 0;
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+}
+.mini-timeline li {
+  display: grid; grid-template-columns: 6em 1fr; gap: var(--s2);
+  align-items: baseline; font-size: .85rem;
+}
+.tl-year { font-family: var(--serif-en); color: var(--accent); font-size: .8rem; white-space: nowrap; }
 .strength-label {
   display: block; font-family: var(--serif-ja); font-weight: 600;
   font-size: 1.02rem; color: var(--accent-deep); margin-bottom: var(--s2);
@@ -219,9 +245,12 @@ html[lang="en"] .thesis-h { font-family: var(--serif-en); }
 html[lang="en"] .strength-label { font-family: var(--serif-en); }
 .strength-claim { font-size: .95rem; margin-bottom: var(--s3); }
 .strength-evidence { font-size: .85rem; color: var(--ink-soft); margin: 0; line-height: 1.75; }
-@media (max-width: 760px) {
-  .strength-list { grid-template-columns: 1fr; }
+.strength-link {
+  display: inline-block; margin-top: var(--s3); font-size: .85rem;
+  color: var(--accent-deep); font-weight: 600; text-decoration: none;
+  border-bottom: 1px solid var(--line); transition: border-color .2s ease;
 }
+.strength-link:hover { border-color: var(--accent); }
 
 /* イラスト用ストローク */
 .ill-stroke-accent { fill: none; stroke: #C96F4A; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
