@@ -233,39 +233,173 @@ html[lang="en"] .thesis-h { font-family: var(--serif-en); }
 .study-lead { font-size: 1.08rem; }
 .study p { margin-bottom: var(--s3); line-height: 1.9; }
 
-/* 強み */
+/* 強み — 3つの横糸（上2＋下1、糸で接続） */
 .strengths { margin-top: 0; }
+.strength-flow { position: relative; }
 .strength-list {
   display: grid; grid-template-columns: 1fr;
-  gap: var(--s4); align-items: start;
+  gap: var(--s3); align-items: stretch;
+  position: relative; z-index: 1;
 }
-@media (min-width: 560px) { .strength-list { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 560px) {
+  .strength-list {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: var(--s5);
+    row-gap: 0;
+  }
+  .strength--learn  { grid-column: 1; grid-row: 1; }
+  .strength--collab { grid-column: 2; grid-row: 1; }
+  .strength-list .strength-thread--step { display: none; }
+  .strength-thread--merge {
+    grid-column: 1 / -1; grid-row: 2;
+    position: relative;
+    height: 3.25rem;
+    margin-block: var(--s3) var(--s2);
+  }
+  .strength-thread--merge .thread-canvas--wide {
+    position: absolute;
+    top: 0;
+    left: calc(25% - var(--s5) / 4);
+    width: calc(50% + var(--s5) / 2);
+    height: 100%;
+    overflow: visible;
+  }
+  .strength-thread--merge .thread-canvas--narrow { display: none; }
+  .strength--create {
+    grid-column: 1 / -1; grid-row: 3;
+    margin-top: 0;
+  }
+  /* 上段カード → 糸の接続点 */
+  .strength--learn::after,
+  .strength--collab::after {
+    content: "";
+    position: absolute; z-index: 2;
+    bottom: calc(-1 * var(--s3) - 5px);
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--card);
+    border: 2px solid #C96F4A;
+    box-shadow: 0 0 0 2px var(--bg-sub);
+  }
+  .section:nth-of-type(even) .strength--learn::after,
+  .section:nth-of-type(even) .strength--collab::after {
+    box-shadow: 0 0 0 2px var(--bg-sub);
+  }
+  .strength--learn::after  { left: 50%; transform: translateX(-50%); }
+  .strength--collab::after { left: 50%; transform: translateX(-50%); }
+  /* 合流の先端：下向き矢印（createカードへ） */
+  .strength-thread--merge::after {
+    content: "";
+    position: absolute; z-index: 2;
+    left: 50%; bottom: -3px; transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 7px solid #C96F4A;
+  }
+}
 .strength {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
   background: var(--card); border: 1px solid var(--line);
   border-radius: 10px; padding: var(--s4);
 }
-.strength-eyebrow {
-  display: block; font-family: var(--serif-en); letter-spacing: .06em;
-  font-size: .7rem; color: var(--blue-deep); margin-bottom: var(--s1);
+/* 糸・矢印 */
+.strength-thread {
+  display: grid; place-items: center;
+  list-style: none;
+  pointer-events: none;
+  overflow: visible;
 }
-/* 創造する → 表現し、行動する の動線（広い画面で矢印） */
-@media (min-width: 560px) {
-  .strength--flow { position: relative; }
-  .strength--flow::before {
-    content: "→"; position: absolute; top: 50%; left: calc(var(--s4) / -2);
-    transform: translate(-50%, -50%);
-    color: var(--accent); font-size: 1.2rem; line-height: 1; pointer-events: none;
+.strength-thread--step {
+  height: 2.5rem;
+  margin-block: calc(-1 * var(--s2));
+}
+.thread-canvas {
+  display: block;
+  overflow: visible;
+}
+.thread-canvas--narrow {
+  width: 1.25rem;
+  height: 2.5rem;
+}
+.thread-stroke {
+  fill: none;
+  stroke: #C96F4A;
+  stroke-width: 2;
+  stroke-dasharray: 5 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.thread-node {
+  fill: var(--card);
+  stroke: #C96F4A;
+  stroke-width: 2;
+}
+.thread-arrow { fill: #C96F4A; }
+/* モバイル：縦矢印 */
+@media (max-width: 559px) {
+  .strength-thread--merge {
+    display: grid;
+    height: 2.5rem;
+    margin-block: calc(-1 * var(--s2));
   }
+  .strength-thread--merge .thread-canvas--wide { display: none; }
+  .strength-thread--merge .thread-canvas--narrow { display: block; }
 }
+.strength-icon {
+  display: block; color: var(--accent); line-height: 0;
+  margin-bottom: var(--s2);
+}
+.strength-icon svg { width: 26px; height: 26px; display: block; }
 .strength-label {
   display: block; font-family: var(--serif-ja); font-weight: 600;
   font-size: 1.02rem; color: var(--accent-deep); margin-bottom: var(--s2);
+  line-height: 1.5;
 }
 html[lang="en"] .strength-label { font-family: var(--serif-en); }
-.strength-claim { font-size: .95rem; margin-bottom: var(--s3); }
-.strength-evidence { font-size: .85rem; color: var(--ink-soft); margin: 0; line-height: 1.75; }
+.strength-claim {
+  font-size: .92rem; margin: 0 0 var(--s2); line-height: 1.75;
+}
+.strength-evidence {
+  font-size: .85rem; color: var(--ink-soft); margin: 0 0 var(--s3);
+  line-height: 1.75; flex: 1;
+}
+ul.strength-evidence {
+  display: grid; gap: var(--s3);
+  padding: 0; list-style: none;
+}
+ul.strength-evidence > li {
+  position: relative;
+  padding-left: 1.15em;
+}
+ul.strength-evidence > li::before {
+  content: "–";
+  position: absolute; left: 0;
+  color: var(--accent); font-weight: 600;
+}
+.strength-activities {
+  display: flex; flex-wrap: wrap; gap: var(--s2);
+  margin: 0; padding-top: var(--s3);
+  border-top: 1px dashed var(--line);
+}
+.strength-activities > li { display: contents; }
+.strength-tag {
+  display: inline-block; font-size: .78rem; line-height: 1.4;
+  color: var(--ink-soft); background: var(--bg-sub);
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 3px var(--s2);
+}
+.section:nth-of-type(even) .strength-tag { background: var(--card); }
+.strength--collab .strength-tag { border-color: color-mix(in srgb, var(--accent) 30%, var(--line)); }
+.strength--learn .strength-tag  { border-color: color-mix(in srgb, var(--blue) 35%, var(--line)); }
+.strength--create .strength-tag { border-color: color-mix(in srgb, var(--accent) 25%, var(--line)); }
+.strength-links {
+  display: flex; flex-wrap: wrap; gap: var(--s3) var(--s4);
+  margin: var(--s3) 0 0;
+}
 .strength-link {
-  display: inline-block; margin-top: var(--s3); font-size: .85rem;
+  font-size: .85rem;
   color: var(--accent-deep); font-weight: 600; text-decoration: none;
   border-bottom: 1px solid var(--line); transition: border-color .2s ease;
 }
