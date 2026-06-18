@@ -227,6 +227,38 @@ html[lang="en"] .hero-goal-text { font-family: var(--serif-en); }
 html[lang="en"] .thesis-h { font-family: var(--serif-en); }
 .thesis-lead { color: var(--ink-soft); max-width: 34em; margin: 0 0 var(--s4); }
 .thesis-detail { color: var(--ink); max-width: 34em; margin: 0 0 var(--s4); font-size: .95rem; line-height: 1.8; }
+/* 卒論 → ビジョンへの橋渡しリンク */
+.thesis-bridge { margin: var(--s4) 0 0; }
+.thesis-bridge a {
+  font-size: .9rem; color: var(--accent-deep); font-weight: 600; text-decoration: none;
+  border-bottom: 1px solid var(--line); transition: border-color .2s ease;
+}
+.thesis-bridge a:hover { border-color: var(--accent); }
+
+/* これから（研究ビジョン）— スクロール物語 */
+.vision-flow { list-style: none; margin: 0; padding: 0; max-width: var(--readw); }
+.vision-beat {
+  position: relative; display: grid; grid-template-columns: 40px 1fr;
+  gap: var(--s4); align-items: start; padding-bottom: var(--s6);
+}
+.vision-beat:last-child { padding-bottom: 0; }
+.vision-icon {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: grid; place-items: center; position: relative; z-index: 1;
+  border: 1.5px solid var(--accent); color: var(--accent); background: var(--card);
+}
+.vision-icon svg { width: 22px; height: 22px; display: block; }
+/* ビートをつなぐ縦の破線 */
+.vision-beat:not(:last-child)::before {
+  content: ""; position: absolute; left: 19px; top: 44px; bottom: 4px;
+  border-left: 2px dashed var(--line);
+}
+.vision-beat p { margin: 0; max-width: 32em; padding-top: 7px; line-height: 1.9; }
+.vision-coda {
+  margin: var(--s5) 0 0; padding-top: var(--s4);
+  border-top: 1px dashed var(--line);
+  color: var(--ink-soft); font-size: .95rem; max-width: var(--readw);
+}
 
 /* 学修・研究の歩み */
 .study { max-width: var(--readw); }
