@@ -236,7 +236,7 @@ html[lang="en"] .thesis-h { font-family: var(--serif-en); }
 .thesis-bridge a:hover { border-color: var(--accent); }
 
 /* これから（研究ビジョン）— スクロール物語 */
-.vision-flow { list-style: none; margin: 0; padding: 0; max-width: var(--readw); }
+.vision-flow { list-style: none; margin: 0; padding: 0; max-width: 50em; }
 .vision-beat {
   position: relative; display: grid; grid-template-columns: 40px 1fr;
   gap: var(--s4); align-items: start; padding-bottom: var(--s6);
@@ -253,15 +253,15 @@ html[lang="en"] .thesis-h { font-family: var(--serif-en); }
   content: ""; position: absolute; left: 19px; top: 44px; bottom: 4px;
   border-left: 2px dashed var(--line);
 }
-.vision-beat p { margin: 0; max-width: 32em; padding-top: 7px; line-height: 1.9; }
+.vision-beat p { margin: 0; padding-top: 7px; line-height: 1.9; }
 .vision-coda {
   margin: var(--s5) 0 0; padding-top: var(--s4);
   border-top: 1px dashed var(--line);
-  color: var(--ink-soft); font-size: .95rem; max-width: var(--readw);
+  color: var(--ink-soft); font-size: .95rem; max-width: 50em;
 }
 
 /* 学修・研究の歩み */
-.study { max-width: var(--readw); }
+.study { max-width: 50em; }
 .study-lead { font-size: 1.08rem; }
 .study p { margin-bottom: var(--s3); line-height: 1.9; }
 
