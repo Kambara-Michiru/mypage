@@ -33,10 +33,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Source+Serif+4:ital,opt@0,7..72;1,7..72&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=20260616v" />
+  <link rel="stylesheet" href="styles.css?v=20260616y" />
 </head>
 <body>
   <a class="skip-link" href="#main" data-ja="本文へスキップ" data-en="Skip to content">本文へスキップ</a>
+  <div class="scroll-progress" aria-hidden="true"><span></span></div>
 
   <!-- ============ HEADER ============ -->
   <header class="site-header" id="top">
@@ -123,6 +124,14 @@
           <li data-ja="Human Agent Interaction" data-en="Human Agent Interaction">Human Agent Interaction</li>
           <li data-ja="デジタルウェルビーイング" data-en="Digital Well-being">デジタルウェルビーイング</li>
         </ul>
+
+        <nav class="hero-explore" aria-label="主要セクションへ">
+          <span class="hero-explore-label" data-ja="見る" data-en="Explore">見る</span>
+          <a href="#path" data-ja="研究" data-en="Research">研究</a>
+          <a href="#work" data-ja="AI・開発" data-en="AI &amp; Dev">AI・開発</a>
+          <a href="#media" data-ja="メディア" data-en="Media">メディア</a>
+          <a href="#writing" data-ja="執筆" data-en="Writing">執筆</a>
+        </nav>
       </div>
     </section>
 
@@ -252,6 +261,17 @@
              data-en="Kyoto University&rsquo;s Faculty of Integrated Human Studies is broadly interdisciplinary. Within that freedom, my choice was to go deep &mdash; sharpening a single, pointed specialization: psychoinformatics.">
             京都大学 総合人間学部は、文理を横断する学際的な学部です。その自由度のなかで私が選んだのは、「心理情報学」という一つの尖った専門を深めることでした。
           </p>
+
+          <figure class="concept" aria-label="心理情報学は認知科学と情報科学の交差点">
+            <div class="concept-row">
+              <span class="concept-node node-a" data-ja="認知科学" data-en="Cognitive science">認知科学</span>
+              <span class="concept-op" aria-hidden="true">×</span>
+              <span class="concept-node node-b" data-ja="情報科学" data-en="Information science">情報科学</span>
+              <span class="concept-op" aria-hidden="true">=</span>
+              <span class="concept-core" data-ja="心理情報学" data-en="Psychoinformatics">心理情報学</span>
+            </div>
+            <figcaption data-ja="二つの分野が交わる点に立ち、こころを科学とエンジニアリングの両面から捉えています。" data-en="Standing where the two fields meet, I approach the mind from both science and engineering.">二つの分野が交わる点に立ち、こころを科学とエンジニアリングの両面から捉えています。</figcaption>
+          </figure>
 
           <h4 class="sub-head" data-ja="核：あたたかさを守る工学設計" data-en="Core — Engineering that protects warmth">核：あたたかさを守る工学設計</h4>
           <p data-ja="私の関心の核は、技術が人間の心の機微を平らに均してしまわないこと——「あたたかさを守る工学設計」にあります。注意経済に代表される、人の注意や感情を搾取的に最適化する設計の対極で、人間の内面の手触りを保ったまま技術をつくることに興味を持ってきました。"
@@ -929,6 +949,6 @@
     </figure>
   </div>
 
-  <script src="script.js?v=20260616v"></script>
+  <script src="script.js?v=20260616y"></script>
 </body>
 </html>
