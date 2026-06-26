@@ -89,6 +89,8 @@
   var spyTargets = document.querySelectorAll('main section[id], .site-footer[id]');
   var ABOUT_CLUSTER = ['about', 'path', 'strengths', 'thesis'];
 
+  var progressBar = document.querySelector('.scroll-progress > span');
+
   if (spyLinks.length && spyTargets.length) {
     var navTrigger = document.querySelector('.nav-trigger');
     var currentId = null;
@@ -97,7 +99,10 @@
       if (id === currentId) return;
       currentId = id;
       spyLinks.forEach(function (a) {
-        a.classList.toggle('is-current', a.getAttribute('href') === '#' + id);
+        var on = a.getAttribute('href') === '#' + id;
+        a.classList.toggle('is-current', on);
+        if (on) { a.setAttribute('aria-current', 'true'); }
+        else { a.removeAttribute('aria-current'); }
       });
       if (navTrigger) {
         navTrigger.classList.toggle('is-current', ABOUT_CLUSTER.indexOf(id) >= 0);
@@ -110,20 +115,30 @@
       var line = window.scrollY + window.innerHeight * 0.35;
       var id = spyTargets[0].id;
       spyTargets.forEach(function (t) {
+        if (!t.getClientRects().length) return; // 非表示（hidden）セクションは除外
         if (t.getBoundingClientRect().top + window.scrollY <= line) id = t.id;
       });
       setCurrent(id);
+    }
+
+    // スクロール進捗（Focus+Context）：全体に対する現在位置を細いバーで示す
+    function updateProgress() {
+      if (!progressBar) return;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      progressBar.style.transform = 'scaleX(' + ratio.toFixed(4) + ')';
     }
 
     var ticking = false;
     function onScroll() {
       if (ticking) return;
       ticking = true;
-      window.requestAnimationFrame(function () { computeCurrent(); ticking = false; });
+      window.requestAnimationFrame(function () { computeCurrent(); updateProgress(); ticking = false; });
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
     computeCurrent();
+    updateProgress();
   }
 
   /* ---------- 4. 写真ライトボックス ---------- */
@@ -233,5 +248,35 @@
         el.style.transform = '';
       });
     });
+
+    // --- D. ヒーロー概観アンカーの Fisheye（Furnas DOI の直感：焦点に近い項目ほど拡大） ---
+    var dock = document.querySelector('.hero-explore');
+    if (dock) {
+      var dockItems = Array.prototype.slice.call(dock.querySelectorAll('a'));
+      var DOCK_RADIUS = 170;  // 焦点からの影響半径 D
+      var DOCK_AMP = 0.45;    // 最大拡大率（API 相当のピーク）
+      var dockRaf = null, dockX = null;
+
+      function dockApply() {
+        dockRaf = null;
+        dockItems.forEach(function (it) {
+          var r = it.getBoundingClientRect();
+          var cx = r.left + r.width / 2;
+          var d = Math.abs(dockX - cx);
+          var doi = Math.max(0, 1 - d / DOCK_RADIUS);   // 関心度 = 1 − 距離/半径
+          var s = 1 + DOCK_AMP * doi;
+          it.style.transform = 'scale(' + s.toFixed(3) + ')';
+          it.style.zIndex = doi > 0.5 ? '2' : '1';
+        });
+      }
+      dock.addEventListener('pointermove', function (e) {
+        dockX = e.clientX;
+        if (!dockRaf) dockRaf = requestAnimationFrame(dockApply);
+      });
+      dock.addEventListener('pointerleave', function () {
+        if (dockRaf) { cancelAnimationFrame(dockRaf); dockRaf = null; }
+        dockItems.forEach(function (it) { it.style.transform = ''; it.style.zIndex = ''; });
+      });
+    }
   }
 })();
