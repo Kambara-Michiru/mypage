@@ -830,6 +830,26 @@ html[lang="en"] .network-panel .np-name { font-family: var(--serif-en); }
 }
 @media (max-width: 560px) { .nw-node text { font-size: 13px; } .nw-edge-label { font-size: 11px; } }
 
+/* エッセイのワードクラウド（note・Medium本文の頻出語） */
+.wordcloud-fig { margin: var(--s5) 0 0; }
+.wordcloud {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: .15em .55em; max-width: 46em; margin: var(--s3) auto 0;
+  line-height: 1.2; text-align: center;
+}
+.wordcloud span {
+  font-family: var(--serif-ja); color: var(--ink-soft);
+  transition: color .2s ease, transform .2s ease; cursor: default;
+}
+html[lang="en"] .wordcloud span { font-family: var(--serif-en); }
+.wordcloud span:hover { color: var(--accent-deep); transform: translateY(-1px); }
+.wc-1 { font-size: clamp(1.9rem, 5vw, 2.6rem); color: var(--accent-deep); font-weight: 600; }
+.wc-2 { font-size: clamp(1.5rem, 3.6vw, 1.95rem); color: var(--ink); }
+.wc-3 { font-size: clamp(1.2rem, 2.8vw, 1.45rem); color: var(--accent); }
+.wc-4 { font-size: 1.12rem; color: var(--ink-soft); }
+.wc-5 { font-size: .92rem; color: var(--ink-soft); opacity: .8; }
+.wc-cap { text-align: center; color: var(--ink-soft); font-size: .9rem; margin-top: var(--s4); max-width: 34em; margin-left: auto; margin-right: auto; }
+
 /* ===== reduced motion ===== */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
