@@ -33,7 +33,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Source+Serif+4:ital,opt@0,7..72;1,7..72&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=20260616y" />
+  <link rel="stylesheet" href="styles.css?v=20260617a" />
 </head>
 <body>
   <a class="skip-link" href="#main" data-ja="本文へスキップ" data-en="Skip to content">本文へスキップ</a>
@@ -51,6 +51,7 @@
           <a href="#about" class="nav-trigger" aria-haspopup="true">About<span class="nav-caret" aria-hidden="true">▾</span></a>
           <div class="nav-menu" role="menu">
             <a href="#about"     role="menuitem" data-ja="自己紹介"         data-en="About Me">自己紹介</a>
+            <a href="#network"   role="menuitem" data-ja="私を構成する要素" data-en="What Makes Me">私を構成する要素</a>
             <a href="#path"      role="menuitem" data-ja="学修・研究の歩み" data-en="Academic Path">学修・研究の歩み</a>
             <a href="#strengths" role="menuitem" data-ja="強み"             data-en="Strengths">強み</a>
             <a href="#thesis"    role="menuitem" data-ja="卒業研究"         data-en="Bachelor's Thesis">卒業研究</a>
@@ -238,6 +239,46 @@
           </figure>
         </div>
 
+      </div>
+    </section>
+
+    <!-- ============ WHAT MAKES ME / NETWORK ============ -->
+    <section class="section" id="network">
+      <div class="deco deco--bl" aria-hidden="true">
+        <svg viewBox="0 0 200 200">
+          <path class="blob-accent float-b" opacity=".10" d="M100,26 C146,24 178,60 174,104 C170,146 146,178 100,176 C56,174 24,144 26,100 C28,58 56,28 100,26 Z"/>
+          <circle class="ring-accent spin" cx="150" cy="58" r="18" opacity=".4"/>
+        </svg>
+      </div>
+      <div class="container">
+        <header class="section-head reveal">
+          <span class="section-num"></span>
+          <h2 data-ja="私を構成する要素" data-en="What Makes Me">私を構成する要素</h2>
+          <p class="section-desc"
+             data-ja="専門・価値観・活動・未来が、どうつながって私をかたちづくっているか。ノードはドラッグでき、クリックすると説明が出ます。"
+             data-en="How my fields, values, activities, and future connect to make me. Drag the nodes; click one for a short note.">専門・価値観・活動・未来が、どうつながって私をかたちづくっているか。ノードはドラッグでき、クリックすると説明が出ます。</p>
+        </header>
+
+        <figure class="network reveal">
+          <div class="network-stage">
+            <svg class="network-svg" viewBox="0 0 760 520" aria-hidden="true">
+              <g class="nw-edges"></g>
+              <g class="nw-edge-labels"></g>
+              <g class="nw-nodes"></g>
+            </svg>
+          </div>
+          <figcaption class="network-panel" aria-live="polite">
+            <span class="np-hint" data-ja="ノードをクリックすると、その要素が私にとって何かが表示されます。" data-en="Click a node to see what that element means to me.">ノードをクリックすると、その要素が私にとって何かが表示されます。</span>
+          </figcaption>
+          <div class="network-legend" aria-hidden="true">
+            <span class="cat-core"><i></i><span data-ja="核" data-en="Core">核</span></span>
+            <span class="cat-domain"><i></i><span data-ja="専門" data-en="Fields">専門</span></span>
+            <span class="cat-value"><i></i><span data-ja="価値観" data-en="Values">価値観</span></span>
+            <span class="cat-activity"><i></i><span data-ja="活動" data-en="Activities">活動</span></span>
+            <span class="cat-future"><i></i><span data-ja="未来" data-en="Future">未来</span></span>
+          </div>
+          <div class="visually-hidden nw-a11y"></div>
+        </figure>
       </div>
     </section>
 
@@ -949,6 +990,6 @@
     </figure>
   </div>
 
-  <script src="script.js?v=20260616y"></script>
+  <script src="script.js?v=20260617a"></script>
 </body>
 </html>
