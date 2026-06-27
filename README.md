@@ -79,12 +79,12 @@ mypage/
 - **Overview-first（Shneiderman のマントラ）** — ヒーローに概観アンカー「見る：研究／AI・開発／メディア／執筆」を置き、スクロール前に全体像と探索導線を提示。各アンカーは **Fisheye**（焦点に近い項目ほど拡大。Furnas の DOI＝関心度−距離 の直感）で反応。
 - **Focus + Context** — 最上部の細いスクロール進捗バーで「今どこ・あとどれくらい」を常時提示。ヘッダーの scrollspy が現在セクションを `aria-current` でハイライト。
 - **前注意過程（preattentive）** — 常時動く装飾はヒーローのみに限定し、各画面の焦点を見出しへ。強調は色・サイズで一画面に最小限。
-- **Show, don't tell（数字より絵で語る）** — 専門性を「認知科学 × 情報科学 ＝ 心理情報学」の概念図に。強みは3本の“横糸”で合流するダイアグラム、研究の歩みは「画面 → 空間」のスクロール物語で提示。
+- **Show, don't tell（数字より絵で語る）** — 専門性を「認知科学 × 情報科学 ＝ 心理情報学」の概念図に。強みは3本の“横糸”で合流するダイアグラム、研究の歩みは「画面 → 空間」のスクロール物語で提示。さらに **「私を構成する要素」フォースグラフ**（自前Verlet＋SVG・21ノードを5カテゴリで・ドラッグ/ホバー/クリック）と、**エッセイのワードクラウド**（note・Medium本文の頻出語を頻度に応じた大きさで）。
 - **メタファ／ゲシュタルト** — 馴染みのあるカード・タイムライン・グリッドで操作を学ばせない。近接・整列で「関連＝近く／別＝余白」を一貫。
 - **WYSIWYG・一貫性** — ナビのラベルと遷移先を一致させ、PC/スマホで表示を統一。
 - **アクセシビリティ** — 色だけに頼らない（scrollspy は太字＋下線も併用）、本文/補助色のコントラストを AA 準拠に調整、装飾 SVG は `aria-hidden`、`prefers-reduced-motion` で演出を停止。
 
-> 実装の対応箇所：概観アンカー＆Fisheye=`index.html .hero-explore` / `script.js`、進捗バー=`.scroll-progress`、scrollspy=`script.js`、概念図=`.concept`、強みの横糸=`.strength-flow`、研究の歩み=`#vision`。
+> 実装の対応箇所：概観アンカー＆Fisheye=`index.html .hero-explore` / `script.js`、進捗バー=`.scroll-progress`、scrollspy=`script.js`、概念図=`.concept`、強みの横糸=`.strength-flow`、研究の歩み=`#vision`、フォースグラフ=`#network`（`script.js` 末尾のIIFE）、ワードクラウド=`.wordcloud`。
 
 ---
 
