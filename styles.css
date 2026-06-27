@@ -783,6 +783,53 @@ html[lang="en"] .concept-node, html[lang="en"] .concept-core { font-family: var(
 /* 前注意：常時回転はヒーローのみ。本文セクションの装飾リングは静止させ、焦点を見出しへ */
 .section .spin { animation: none; }
 
+/* 私を構成する要素 — フォースグラフ（自前Verlet＋SVG） */
+.network { margin: 0; }
+.network-stage { position: relative; }
+.network-svg {
+  width: 100%; height: auto; display: block; overflow: visible;
+  touch-action: pan-y; font-family: var(--serif-ja);
+}
+html[lang="en"] .network-svg { font-family: var(--serif-en); }
+.network-svg text { user-select: none; }
+.nw-edge { fill: none; stroke: var(--ink); stroke-opacity: .14; stroke-width: 1.2; transition: stroke .2s, stroke-opacity .2s; }
+.nw-edge.hot { stroke: var(--accent); stroke-opacity: .7; }
+.nw-edge-label { fill: var(--ink-soft); font-size: 10px; opacity: 0; transition: opacity .2s; pointer-events: none; }
+.nw-edge-label.hot { opacity: 1; }
+.nw-node { cursor: grab; }
+.nw-node:active { cursor: grabbing; }
+.nw-node circle {
+  stroke: var(--c, var(--accent)); stroke-width: 1.5;
+  fill: color-mix(in srgb, var(--c, var(--accent)) 14%, var(--card));
+  transition: opacity .2s;
+}
+.nw-node.is-core circle { fill: color-mix(in srgb, var(--c) 34%, var(--card)); stroke-width: 2; }
+.nw-node text { fill: var(--ink); font-size: 11px; text-anchor: middle; transition: opacity .2s; pointer-events: none; }
+.nw-node.is-core text { font-weight: 600; }
+.cat-core     { --c: #C96F4A; }
+.cat-domain   { --c: #5E7488; }
+.cat-value    { --c: #6F8060; }
+.cat-activity { --c: #AD832F; }
+.cat-future   { --c: #8E7385; }
+.network-svg.has-focus .nw-node:not(.hot) { opacity: .2; }
+.network-svg.has-focus .nw-edge:not(.hot) { stroke-opacity: .04; }
+.network-panel {
+  margin-top: var(--s4); min-height: 3.4em; max-width: var(--readw);
+  border-top: 1px dashed var(--line); padding-top: var(--s3);
+}
+.network-panel .np-name { font-family: var(--serif-ja); font-weight: 600; color: var(--accent-deep); margin-right: var(--s2); }
+html[lang="en"] .network-panel .np-name { font-family: var(--serif-en); }
+.network-panel .np-desc { color: var(--ink-soft); }
+.network-panel .np-hint { color: var(--ink-soft); font-size: .92rem; }
+.network-legend { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s3); margin-top: var(--s3); font-size: .8rem; color: var(--ink-soft); }
+.network-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.network-legend i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); border: 1px solid color-mix(in srgb, var(--c) 60%, var(--line)); }
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+@media (max-width: 560px) { .nw-node text { font-size: 13px; } .nw-edge-label { font-size: 11px; } }
+
 /* ===== reduced motion ===== */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
