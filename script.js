@@ -129,16 +129,27 @@
       progressBar.style.transform = 'scaleX(' + ratio.toFixed(4) + ')';
     }
 
+    // ヒーローのスクロール連動：緩く縮小・フェードして About へ受け渡す
+    var heroInner2 = document.querySelector('.hero-inner');
+    function updateHero() {
+      if (!heroInner2 || reduce) return;
+      var t = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 0.9)));
+      heroInner2.style.opacity = (1 - t * 0.55).toFixed(3);
+      heroInner2.style.transform = 'translateY(' + (t * -26).toFixed(1) + 'px) scale(' + (1 - t * 0.045).toFixed(4) + ')';
+      heroInner2.style.transformOrigin = 'left top';
+    }
+
     var ticking = false;
     function onScroll() {
       if (ticking) return;
       ticking = true;
-      window.requestAnimationFrame(function () { computeCurrent(); updateProgress(); ticking = false; });
+      window.requestAnimationFrame(function () { computeCurrent(); updateProgress(); updateHero(); ticking = false; });
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
     computeCurrent();
     updateProgress();
+    updateHero();
   }
 
   /* ---------- 4. 写真ライトボックス ---------- */

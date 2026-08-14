@@ -165,38 +165,60 @@ html[lang="en"] h1, html[lang="en"] h2, html[lang="en"] h3 { font-family: var(--
 .muted { color: var(--ink-soft); }
 .note { font-size: .88rem; margin-top: var(--s2); max-width: var(--readw); }
 
-/* ===== hero ===== */
-.hero { padding-block: clamp(var(--s7), 14vh, 180px) var(--s7); position: relative; overflow: hidden; }
+/* ===== hero（巨大タイポ：ミッションの一文が主役） ===== */
+.hero { padding-block: clamp(var(--s6), 11vh, 140px) 0; position: relative; overflow: hidden; }
 .hero-inner { position: relative; z-index: 1; }
-.hero-goal {
-  display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--s2) var(--s3);
-  margin: 0 0 var(--s5); padding-bottom: var(--s4);
-  border-bottom: 1px solid var(--line);
-}
-.hero-goal-label {
-  font-family: var(--serif-en); letter-spacing: .25em; text-transform: uppercase;
-  font-size: .72rem; color: var(--accent-deep);
-}
-.hero-goal-text {
-  font-family: var(--serif-ja); font-size: clamp(1.15rem, 3.5vw, 1.6rem);
-  color: var(--ink); letter-spacing: .03em; line-height: 1.5;
-}
-html[lang="en"] .hero-goal-text { font-family: var(--serif-en); }
 
 .hero-eyebrow {
   font-family: var(--serif-en); letter-spacing: .35em; text-transform: uppercase;
   font-size: .8rem; color: var(--accent-deep); margin: 0 0 var(--s4);
 }
-.hero-name { display: flex; flex-direction: column; gap: var(--s2); margin-bottom: var(--s5); }
-.hero-name-ja { font-family: var(--serif-ja); font-size: clamp(2.4rem, 8vw, 4.2rem); letter-spacing: .04em; }
-.hero-name-en { font-family: var(--serif-en); font-size: clamp(1rem, 3vw, 1.35rem); color: var(--ink-soft); letter-spacing: .08em; }
+.hero-title {
+  font-family: var(--serif-ja); font-weight: 600;
+  font-size: clamp(2.5rem, 7.6vw, 5.4rem);
+  line-height: 1.18; letter-spacing: .02em;
+  margin: 0 0 var(--s4); text-wrap: balance;
+}
+.hero-title em { font-style: normal; color: var(--accent-deep); }
+html[lang="en"] .hero-title { font-family: var(--serif-en); letter-spacing: 0; }
+.hero-byline {
+  font-family: var(--serif-ja); font-size: clamp(1rem, 2.2vw, 1.2rem);
+  color: var(--ink-soft); letter-spacing: .06em; margin: 0 0 var(--s5);
+}
+html[lang="en"] .hero-byline { font-family: var(--serif-en); }
 .hero-lead { max-width: var(--readw); font-size: 1.12rem; margin: 0 0 var(--s5); }
 
-.tag-row { display: flex; flex-wrap: wrap; gap: var(--s2); }
-.tag-row li {
-  font-size: .85rem; color: var(--ink-soft);
-  border: 1px solid var(--line); border-radius: 999px;
-  padding: var(--s1) var(--s3); background: var(--card);
+/* ロード時スタガー（fade-up）。reduced-motion では即完了して表示 */
+.hero-inner > * { opacity: 0; transform: translateY(18px); animation: heroIn .8s cubic-bezier(.22, .7, .3, 1) forwards; }
+.hero-inner > *:nth-child(1) { animation-delay: .05s; }
+.hero-inner > *:nth-child(2) { animation-delay: .16s; }
+.hero-inner > *:nth-child(3) { animation-delay: .3s; }
+.hero-inner > *:nth-child(4) { animation-delay: .42s; }
+.hero-inner > *:nth-child(5) { animation-delay: .54s; }
+@keyframes heroIn { to { opacity: 1; transform: none; } }
+
+/* 静かなマーキー（概念の帯）：低速・ホバーで停止 */
+.hero-marquee {
+  position: relative; z-index: 1;
+  margin-top: clamp(var(--s5), 7vh, var(--s7));
+  border-top: 1px solid var(--line);
+  padding-block: var(--s3);
+  overflow: hidden;
+  opacity: 0; animation: heroIn .8s ease .7s forwards;
+}
+.marquee-track { display: flex; width: max-content; animation: marqueeX 64s linear infinite; }
+.hero-marquee:hover .marquee-track { animation-play-state: paused; }
+.mq-set { display: flex; align-items: baseline; white-space: nowrap; }
+.mq-set span {
+  font-family: var(--serif-ja); font-size: 1.02rem; letter-spacing: .06em;
+  color: var(--ink-soft); opacity: .8;
+}
+html[lang="en"] .mq-set span { font-family: var(--serif-en); }
+.mq-set i { font-style: normal; color: var(--accent); margin: 0 var(--s4); opacity: .7; }
+@keyframes marqueeX { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+  .hero-inner > *, .hero-marquee { opacity: 1; transform: none; animation: none; }
 }
 
 /* ===== about ===== */
@@ -782,6 +804,14 @@ html[lang="en"] .concept-node, html[lang="en"] .concept-core { font-family: var(
 
 /* 前注意：常時回転はヒーローのみ。本文セクションの装飾リングは静止させ、焦点を見出しへ */
 .section .spin { animation: none; }
+
+/* カードホバー強化（色の沈み込み・穏やかな変化） */
+a.link-card { transition: border-color .25s, transform .25s, background .25s; }
+a.link-card:hover { background: var(--bg-sub); }
+.tl-body h3 { transition: color .2s ease; }
+.tl-item:hover .tl-body h3 { color: var(--accent-deep); }
+.strength { transition: border-color .25s ease, transform .25s ease; }
+.strength:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); transform: translateY(-2px); }
 
 /* 私を構成する要素 — フォースグラフ（自前Verlet＋SVG） */
 .network { margin: 0; }
