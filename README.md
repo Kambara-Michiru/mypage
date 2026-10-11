@@ -113,8 +113,8 @@ WebGL が使えない環境では何も差し込まず、これまでどおり�
 
 | 場所 | ライブラリ | 何を表しているか | コード |
 |---|---|---|---|
-| ヒーローのロボット | [three.js](https://threejs.org/examples/#webgl_animation_skinning_morph) + R3F（RobotExpressive：Tomás Laulhé／Quaternius、改変 Don McCurdy、CC0） | あいさつするロボット。手を振る・カーソルを目で追う・ナビに合わせてうなずく／グッド／ジャンプ・画面外でさみしい顔。ヒーローを離れると右下のすりガラスの台に小さく移り、ずっとそばにいる（スクロール中は薄く、「これから」では3Dを見守る、クリックでページ先頭へ、連絡先で手を振る）。色はピーチとミルクにして、ほっぺを足した | `src/effects/HeroRobot.tsx` |
-| ヒーロー背景 | [ShaderGradient](https://github.com/ruucm/shadergradient) | 書斎の窓辺に差し込む午後の光（生成り・テラコッタ・くすみブルーのみ） | `src/effects/HeroLight.tsx` |
+| ヒーローのロボット | [three.js](https://threejs.org/examples/#webgl_animation_skinning_morph) + R3F（RobotExpressive：Tomás Laulhé／Quaternius、改変 Don McCurdy、CC0） | あいさつするロボット。手を振る・カーソルを目で追う・ナビに合わせてうなずく／グッド／ジャンプ・画面外でさみしい顔。ヒーローを離れると右下のすりガラスの台に小さく移り、ずっとそばにいる（スクロール中は薄くなり、頭は動かさずに体が傾いて両腕でバランスをとる。「これから」では3Dを見守る、クリックでページ先頭へ、連絡先で手を振る）。色はピーチとミルクにして、ほっぺを足した | `src/effects/HeroRobot.tsx` |
+| ヒーロー背景 | 自作シェーダー（素の WebGL） | 縦溝ガラス（フルーテッドガラス）越しの光。ピーチ・テラコッタ・くすみブルーの光がゆっくり漂い、畝ごとに像が反転して、光の点にだけ細い反射の筋が走る。カーソルの光がついてくる | `src/effects/HeroLight.tsx` |
 | ヒーローの「見る」ナビ | [liquid-glass-js](https://github.com/dashersw/liquid-glass-js) | 光を屈折するガラス。本物の `<a>` リンクをそのまま中に入れている | `src/effects/heroGlass.ts` |
 | これから — 画面から、空間へ | [React Three Fiber](https://github.com/pmndrs/react-three-fiber) + drei | スクロールに合わせて「画面（薄い板）→ からだ → 目（視線）→ 内側の灯」へ変わるガラス | `src/effects/VisionScene.tsx` |
 
@@ -122,7 +122,7 @@ WebGL が使えない環境では何も差し込まず、これまでどおり�
 - 入口は `src/effects/main.tsx`。3D シーンは画面に近づいてから読み込む（初回表示を軽く保つ）。
 - `prefers-reduced-motion` のときはグラデーションとロボットのしぐさを止め、スクロール連動だけ残す。
 - liquid-glass-js は npm 配布が無いため `src/vendor/liquid-glass.js` に同梱（MIT、`src/vendor/LIQUID-GLASS-LICENSE.txt`）。本家はページを html2canvas で撮影するが、ここでは動くグラデーションを毎フレーム直接テクスチャに流し込んでいる。
-- `three` は ShaderGradient が想定する `0.169.0` に固定。上げると色味が変わることがある。
+- `three` は `0.169.0` に固定（以前 ShaderGradient が想定していた版）。`@shadergradient/react` は今は使っていないので、次に依存を整理するときに外してよい。
 
 ## ローカルで動かす
 

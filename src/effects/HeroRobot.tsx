@@ -26,6 +26,8 @@ export type RobotBus = {
   watching: boolean
   /** ロボットから見たカーソルの方向（-1〜1）。ページのどこにカーソルがあっても目で追う */
   look: { x: number; y: number }
+  /** スクロールの速さ（px/s）と最後にスクロールした時刻。頭ではなく体と腕で受け止める */
+  scroll: { v: number; t: number }
   /** クリックされたとき（右下にいるときはページ先頭へ） */
   onClick?: () => void
   _listener?: (name: Emote) => void
@@ -59,12 +61,21 @@ function Robot({ bus, still }: { bus: RobotBus; still: boolean }) {
   const head = useMemo(() => {
     let bone: THREE.Bone | undefined
     let face: THREE.Mesh | undefined
+    const arms: { upper: THREE.Bone; hand?: THREE.Bone }[] = []
+    const bones: Record<string, THREE.Bone> = {}
     scene.traverse((o) => {
+      if ((o as THREE.Bone).isBone) bones[o.name] = o as THREE.Bone
       if ((o as THREE.Bone).isBone && o.name === 'Head') bone = o as THREE.Bone
       const m = o as THREE.Mesh
       if (m.isMesh && m.morphTargetDictionary && 'Sad' in m.morphTargetDictionary) face = m
     })
-    return { bone, face }
+    for (const side of ['L', 'R']) {
+      // three.js は骨の名前から「.」を取り除く（UpperArm.L → UpperArmL）
+      const get = (n: string) => bones[`${n}${side}`] ?? bones[`${n}.${side}`]
+      const upper = get('UpperArm')
+      if (upper) arms.push({ upper, hand: get('Hand') ?? get('LowerArm') })
+    }
+    return { bone, face, arms }
   }, [scene])
 
   // 色をやわらかく。マットで少しだけつや
@@ -230,7 +241,32 @@ function Robot({ bus, still }: { bus: RobotBus; still: boolean }) {
     [],
   )
 
+  // スクロールを受け止める「ばね」：体の前後の傾きと、腕の開き
+  const sway = useMemo(
+    () => ({ lean: 0, leanV: 0, arm: 0, armV: 0, q: new THREE.Quaternion(), pq: new THREE.Quaternion(), a: new THREE.Vector3(), b: new THREE.Vector3(), c: new THREE.Vector3(), axis: new THREE.Vector3() }),
+    [],
+  )
+
   useFrame((state, dt) => {
+    const now = performance.now()
+    const scrolling = now - bus.scroll.t < 400
+    // ---- スクロール：頭は動かさず、体がふわっと傾いて腕でバランスをとる ----
+    if (!still) {
+      const sv = now - bus.scroll.t < 180 ? THREE.MathUtils.clamp(bus.scroll.v / 1500, -1, 1) : 0
+      // 減衰の弱いばね → 止まったあと一、二度ゆれて戻る。
+      // フレームの間隔に左右されないよう、細かく刻んで積分する
+      const k = 60, c = 7
+      let rest = Math.min(dt, 0.25)
+      while (rest > 0) {
+        const h = Math.min(rest, 1 / 120)
+        sway.leanV += (k * (sv * 0.16 - sway.lean) - c * sway.leanV) * h
+        sway.lean += sway.leanV * h
+        sway.armV += (k * 0.8 * (Math.abs(sv) * 0.5 - sway.arm) - c * sway.armV) * h
+        sway.arm += sway.armV * h
+        rest -= h
+      }
+    }
+
     // 行列が確定してから（数フレーム後に）貼る
     frames.current++
     if (!cheeksDone.current && frames.current === 4) {
@@ -241,6 +277,29 @@ function Robot({ bus, still }: { bus: RobotBus; still: boolean }) {
     if (body.current) {
       const target = bus.watching ? -0.85 : -0.28
       body.current.rotation.y = THREE.MathUtils.damp(body.current.rotation.y, target, 2, dt)
+      // 足もとを支点に前後へ傾く（下へスクロール＝ページが上へ流れる → 慣性で後ろへ）
+      body.current.rotation.x = sway.lean
+    }
+    // 腕：肩から手への向きを、体の外側へ少し持ち上げる（両手でバランスをとるしぐさ）
+    if (Math.abs(sway.arm) > 0.001 && head.arms.length) {
+      const center = sway.c
+      body.current?.getWorldPosition(center)
+      for (const { upper, hand } of head.arms) {
+        if (!hand || !upper.parent) continue
+        upper.getWorldPosition(sway.a)
+        hand.getWorldPosition(sway.b)
+        const dir = sway.b.sub(sway.a).normalize() // 肩→手
+        const out = sway.a.clone().sub(center)
+        out.y = 0
+        if (out.lengthSq() < 1e-6) continue
+        out.normalize()
+        sway.axis.crossVectors(dir, out).normalize()
+        sway.q.setFromAxisAngle(sway.axis, sway.arm)
+        upper.parent.getWorldQuaternion(sway.pq)
+        const wq = sway.pq.clone().multiply(upper.quaternion).premultiply(sway.q)
+        upper.quaternion.copy(sway.pq.invert().multiply(wq))
+        upper.updateMatrixWorld(true)
+      }
     }
 
     // 視線：頭をカーソルのほうへ（ミキサーが姿勢を決めたあとに足す）
@@ -253,8 +312,11 @@ function Robot({ bus, still }: { bus: RobotBus; still: boolean }) {
       const tYaw = quiet ? 0 : THREE.MathUtils.clamp(bus.look.x * MAX_YAW, -MAX_YAW, MAX_YAW)
       const tPitch = away.current ? 0.08 : bus.watching ? 0 : THREE.MathUtils.clamp(-bus.look.y * MAX_PITCH, -MAX_PITCH, MAX_PITCH)
       const idleLook = still ? 0 : Math.sin(state.clock.elapsedTime * 0.35) * 0.03
-      look.yaw = THREE.MathUtils.damp(look.yaw, tYaw + idleLook, 2.5, dt)
-      look.pitch = THREE.MathUtils.damp(look.pitch, tPitch, 2.5, dt)
+      // スクロール中は視線を止める（頭は動かさない）
+      if (!scrolling) {
+        look.yaw = THREE.MathUtils.damp(look.yaw, tYaw + idleLook, 2.5, dt)
+        look.pitch = THREE.MathUtils.damp(look.pitch, tPitch, 2.5, dt)
+      }
       head.bone.parent.getWorldQuaternion(look.parentQ)
       look.worldQ.copy(look.parentQ).multiply(head.bone.quaternion) // 今の頭の向き（世界）
       look.e.set(look.pitch, look.yaw, 0, 'YXZ')

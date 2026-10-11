@@ -128,6 +128,7 @@ function robot() {
     docked: false,
     watching: false,
     look: { x: 0, y: 0 },
+    scroll: { v: 0, t: 0 },
     emote: (n) => bus._listener?.(n),
     // 右下にいるときのクリックは「ページの先頭へ」
     onClick: () => {
@@ -191,10 +192,20 @@ function robot() {
   )
 
   // スクロール中は薄くなり、止まると戻る（読むのを邪魔しない）
+  // あわせて速さを測り、ロボットの体と腕のゆれに使う（頭は動かさない）
   let t = 0
+  let lastY = window.scrollY
+  let lastT = performance.now()
   window.addEventListener(
     'scroll',
     () => {
+      const now = performance.now()
+      const dy = window.scrollY - lastY
+      const ms = Math.max(8, now - lastT)
+      bus.scroll.v = bus.scroll.v * 0.5 + ((dy / ms) * 1000) * 0.5
+      bus.scroll.t = now
+      lastY = window.scrollY
+      lastT = now
       if (!bus.docked) return
       box.classList.add('is-scrolling')
       clearTimeout(t)
