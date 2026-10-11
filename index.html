@@ -33,7 +33,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Source+Serif+4:ital,opt@0,7..72;1,7..72&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=20260617d" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="system.css" />
 </head>
 <body>
   <a class="skip-link" href="#main" data-ja="本文へスキップ" data-en="Skip to content">本文へスキップ</a>
@@ -512,15 +513,20 @@
               <circle class="ill-dot-accent" cx="83" cy="49" r="2.2" opacity=".7"/>
               <!-- アドバイスの流れ（点線） -->
               <path class="ill-flow" d="M100 100 H172"/>
-              <!-- AIノード -->
+              <!-- AI（ヒーローと同じロボット：横長の頭・丸い目・眉・ほっぺ） -->
               <g class="ill-stroke-blue">
-                <rect x="176" y="74" width="52" height="52" rx="10"/>
-                <circle cx="202" cy="100" r="9"/>
-                <line x1="176" y1="88" x2="166" y2="88"/><line x1="176" y1="112" x2="166" y2="112"/>
-                <line x1="228" y1="88" x2="238" y2="88"/><line x1="228" y1="112" x2="238" y2="112"/>
-                <line x1="190" y1="74" x2="190" y2="64"/><line x1="214" y1="74" x2="214" y2="64"/>
+                <rect x="170" y="76" width="64" height="42" rx="15"/>
+                <line x1="202" y1="118" x2="202" y2="125"/>
+                <rect x="188" y="125" width="28" height="17" rx="6"/>
               </g>
-              <text class="ill-ai" x="202" y="138">AI</text>
+              <path class="ill-brow" d="M182 86 h11 M211 86 h11"/>
+              <circle class="ill-eye" cx="189" cy="97" r="6.5"/>
+              <circle class="ill-eye" cx="215" cy="97" r="6.5"/>
+              <circle cx="191.5" cy="94.5" r="1.8" fill="#FFFCF8"/>
+              <circle cx="217.5" cy="94.5" r="1.8" fill="#FFFCF8"/>
+              <ellipse class="ill-cheek" cx="183" cy="108" rx="4.6" ry="2.8"/>
+              <ellipse class="ill-cheek" cx="221" cy="108" rx="4.6" ry="2.8"/>
+              <text class="ill-ai" x="202" y="158">AI</text>
               <!-- 受容を測る天秤（信頼性） -->
               <g class="ill-stroke-accent">
                 <line x1="140" y1="166" x2="140" y2="190"/>
@@ -1060,6 +1066,7 @@
     </figure>
   </div>
 
-  <script src="script.js?v=20260617d"></script>
+  <script src="script.js?v=20261011"></script>
+  <script type="module" src="/src/effects/main.tsx"></script>
 </body>
 </html>

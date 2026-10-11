@@ -31,7 +31,7 @@
 
 ## このリポジトリについて
 
-このサイトのソースコードです。ビルド不要の静的サイト（素の HTML / CSS / JavaScript）で、そのまま GitHub Pages に置けます。
+このサイトのソースコードです。本体は素の HTML / CSS / JavaScript のままで、WebGL エフェクトだけを Vite でビルドして差し込んでいます（詳しくは「エフェクト層」）。
 
 ### ファイル構成
 
@@ -39,7 +39,11 @@
 mypage/
 ├── index.html        # 本体（1ページ・全セクション）
 ├── styles.css        # デザイントークン + スタイル
+├── system.css        # 素材のルール（紙・光・ガラス）で見た目をそろえる層
 ├── script.js         # JA/EN切替・スクロールフェード・モバイルメニュー
+├── src/effects/      # WebGL エフェクト（ヒーローの光・ガラス・ロボット、3D）
+├── src/vendor/       # liquid-glass-js（同梱）
+├── vite.config.ts    # ビルド設定（既存ファイルはそのまま dist にコピー）
 ├── assets/           # favicon / OGP（favicon.svg, apple-touch-icon.png, ogp.png/svg）
 ├── images/           # debating_me.jpeg（About の写真）
 └── pdf/              # 配布資料（KaiRA会誌 2024/2025・発表スライド）
@@ -68,6 +72,20 @@ mypage/
 | 罫線 | `#E0D7CA` |
 
 見出し: Noto Serif JP / Source Serif 4 ・ 本文: Zen Kaku Gothic New / Inter（Google Fonts）
+
+### 素材のルール：紙・光・ガラス（`system.css`）
+
+見た目の言語をそろえるため、すべての要素を3つの素材のどれかに属させています。
+
+| 素材 | 使う場所 | 決まりごと |
+|---|---|---|
+| 紙 | 文章・カード | 平ら・細い罫線・影なし。角丸 16px（写真は 12px、タグはピル） |
+| 光 | 背景の雰囲気 | 淡いテラコッタ `#EDB396` とくすみブルー `#B7C5D2` の、ぼけた光の玉だけ。動かない。ヒーローの光は下端で紙へにじむ |
+| ガラス | 応えてくれるもの（ヒーローのナビ・メニュー・「これから」の3D） | 影はここだけ（インクブラウン系） |
+
+- 光源はいつも左上（書斎の窓）。ロボット・3D・光の明るい側をそろえる。
+- ページ全体にごく薄い紙の粒子（3〜5%）を敷き、ヒーローの光の粒子と質感をそろえる。
+- ロボットは1体のキャラクター：横長の頭・丸い目・短い眉・ほっぺ。ヒーロー（3D）、卒業研究（線画）、「これから」（ガラス）に同じ顔で登場する。
 各セクションにはインライン SVG の装飾レイヤー（`.deco`）を配置。`aria-hidden`・`pointer-events:none`・背面固定のため可読性と操作性には影響しません。
 
 ---
@@ -88,20 +106,41 @@ mypage/
 
 ---
 
-## ローカルプレビュー
+## エフェクト層（2026年10月リニューアル）
+
+ページの中身・構成・情報設計はそのままに、WebGL のエフェクトを「島」として後から差し込んでいます。
+WebGL が使えない環境では何も差し込まず、これまでどおりのページが表示されます。
+
+| 場所 | ライブラリ | 何を表しているか | コード |
+|---|---|---|---|
+| ヒーローのロボット | [three.js](https://threejs.org/examples/#webgl_animation_skinning_morph) + R3F（RobotExpressive：Tomás Laulhé／Quaternius、改変 Don McCurdy、CC0） | あいさつするロボット。手を振る・カーソルを目で追う・ナビに合わせてうなずく／グッド／ジャンプ・画面外でさみしい顔。ヒーローを離れると右下のすりガラスの台に小さく移り、ずっとそばにいる（スクロール中は薄く、「これから」では3Dを見守る、クリックでページ先頭へ、連絡先で手を振る）。色はピーチとミルクにして、ほっぺを足した | `src/effects/HeroRobot.tsx` |
+| ヒーロー背景 | [ShaderGradient](https://github.com/ruucm/shadergradient) | 書斎の窓辺に差し込む午後の光（生成り・テラコッタ・くすみブルーのみ） | `src/effects/HeroLight.tsx` |
+| ヒーローの「見る」ナビ | [liquid-glass-js](https://github.com/dashersw/liquid-glass-js) | 光を屈折するガラス。本物の `<a>` リンクをそのまま中に入れている | `src/effects/heroGlass.ts` |
+| これから — 画面から、空間へ | [React Three Fiber](https://github.com/pmndrs/react-three-fiber) + drei | スクロールに合わせて「画面（薄い板）→ からだ → 目（視線）→ 内側の灯」へ変わるガラス | `src/effects/VisionScene.tsx` |
+
+- ロボットのモデルは `src/effects/assets/robot.glb`（約460KB）。ヒーローの文字が出たあとに読み込む。
+- 入口は `src/effects/main.tsx`。3D シーンは画面に近づいてから読み込む（初回表示を軽く保つ）。
+- `prefers-reduced-motion` のときはグラデーションとロボットのしぐさを止め、スクロール連動だけ残す。
+- liquid-glass-js は npm 配布が無いため `src/vendor/liquid-glass.js` に同梱（MIT、`src/vendor/LIQUID-GLASS-LICENSE.txt`）。本家はページを html2canvas で撮影するが、ここでは動くグラデーションを毎フレーム直接テクスチャに流し込んでいる。
+- `three` は ShaderGradient が想定する `0.169.0` に固定。上げると色味が変わることがある。
+
+## ローカルで動かす
 
 ```bash
-cd mypage
-python3 -m http.server 4173
-# → http://localhost:4173
+npm install
+npm run dev        # http://localhost:5173
+npm run build      # dist/ に本番用ファイル
+npm run preview    # ビルド結果の確認
 ```
+
+Node.js 20 以上。
 
 ## GitHub Pages へのデプロイ
 
-1. GitHub リポジトリとして push（例: `username/mypage` または `username.github.io`）。
-2. **Settings → Pages → Build and deployment → Source** を **Deploy from a branch** に設定。
-3. **Branch** を `main` / `/ (root)` にして **Save**。
-4. 数分後 `https://<username>.github.io/<repo>/` で公開。
+ビルドが必要になったので、GitHub Actions でデプロイします（`.github/workflows/deploy.yml`）。
 
-> すべて相対パスのため、サブディレクトリ公開でも追加設定は不要です。
+1. **Settings → Pages → Build and deployment → Source** を **GitHub Actions** に変更（以前の「Deploy from a branch」から切り替え）。
+2. `main` に push すると自動でビルド・公開されます。
+3. `https://<username>.github.io/mypage/` で公開（`vite.config.ts` の `base: './'` によりサブパスでもそのまま動きます）。
+
 > 公開URLを確定したら、`index.html` の `<link rel="canonical">` と OGP の `og:image`（現状 `https://example.github.io/` のプレースホルダ）を実URLに更新してください。
