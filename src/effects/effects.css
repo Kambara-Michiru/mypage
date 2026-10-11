@@ -1,0 +1,125 @@
+/* ===========================================================
+   エフェクト層（WebGL が使えるときだけ html.fx が付く）
+   既存の styles.css のトークンをそのまま使う
+   =========================================================== */
+
+/* ---------- ヒーロー：午後の光 ---------- */
+.fx .hero-light {
+  position: absolute; inset: 0; z-index: 0;
+  /* 光は下端で紙へにじむ（ヒーローとページの境目をなくす） */
+  -webkit-mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
+}
+.fx .hero-light canvas { opacity: 0; animation: lightIn 1.6s ease .2s forwards; }
+@keyframes lightIn { to { opacity: 1; } }
+/* 文字の側は生成りのヴェールで読みやすさを確保（heroGlass.ts の VEIL と同じ値） */
+.fx .hero-veil {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: linear-gradient(90deg,
+    rgba(250, 246, 240, .78) 0%,
+    rgba(250, 246, 240, .35) 55%,
+    rgba(250, 246, 240, 0) 100%);
+}
+/* グラデーションが装飾の役を引き継ぐので、SVG の装飾は隠す */
+.fx .hero-deco { display: none; }
+.fx .hero-marquee { background: color-mix(in srgb, var(--bg) 70%, transparent); backdrop-filter: blur(6px); }
+
+/* ---------- ヒーロー：ガラスの「見る」ナビ ---------- */
+.hero-glass {
+  display: inline-flex; margin-top: var(--s5);
+  padding: var(--s2) var(--s3);
+  max-width: 100%;
+}
+.hero-explore.is-glass {
+  margin: 0; padding: 0; border-top: 0;
+  gap: var(--s1) var(--s2);
+}
+.hero-explore.is-glass a {
+  background: transparent; border-color: transparent;
+  text-shadow: 0 1px 0 rgba(255, 252, 248, .7);
+}
+.hero-explore.is-glass a:hover {
+  background: color-mix(in srgb, var(--card) 55%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+}
+.hero-explore.is-glass .hero-explore-label { padding-left: var(--s2); }
+
+/* ---------- これから：画面から、空間へ ---------- */
+/* sticky を効かせるため、このセクションだけ overflow を clip に */
+#vision.has-stage { overflow: clip; }
+.vision-stage-wrap {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: var(--s6); align-items: start;
+}
+.vision-stage {
+  position: sticky; top: calc(var(--header-h) + var(--s5));
+  height: min(64vh, 520px);
+  border-radius: 18px;
+}
+.has-stage .vision-flow { padding-block: 8vh 18vh; }
+.has-stage .vision-beat p { transition: color .4s ease, opacity .4s ease; }
+.has-stage .vision-beat:not(.is-current) p { color: var(--ink-soft); opacity: .62; }
+.has-stage .vision-beat.is-current .vision-icon { background: var(--accent); color: var(--card); }
+.has-stage .vision-icon { transition: background .4s ease, color .4s ease; }
+
+@media (max-width: 760px) {
+  .vision-stage-wrap { grid-template-columns: 1fr; gap: 0; }
+  .vision-stage {
+    top: var(--header-h); z-index: 2;
+    height: 38vh; margin-inline: calc(var(--s4) * -1);
+    border-radius: 0;
+    /* 段落がこの下を通るので、セクションの地色でフェードさせる */
+    background: linear-gradient(var(--stage-bg, var(--bg)) 80%, transparent);
+  }
+  .has-stage .vision-flow { padding-block: var(--s4) 30vh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx .hero-light canvas { animation: none; opacity: 1; }
+  .has-stage .vision-beat p, .has-stage .vision-icon { transition: none; }
+}
+
+/* ---------- ヒーロー：あいさつするロボット ---------- */
+.hero-robot { position: absolute; z-index: 1; pointer-events: auto; }
+.hero-robot canvas { opacity: 0; animation: lightIn 1s ease .4s forwards; }
+/* スマホ：見出しの上の右側に小さく */
+@media (max-width: 760px) {
+  .fx .hero.robot-top { padding-top: calc(clamp(var(--s6), 11vh, 140px) + 150px); }
+}
+.fx .hero.robot-top .hero-robot {
+  top: 8px; right: 4px; left: auto;
+  width: min(56vw, 240px); height: 230px;
+}
+
+/* ---------- ずっとそばにいるロボット（ヒーローを離れたら右下へ） ---------- */
+/* 素材は「ガラス」：応えてくれる存在なので、すりガラスの台に乗せる */
+.fx .hero .hero-robot.docked {
+  position: fixed; z-index: 80;
+  left: auto; top: auto;
+  right: calc(16px + env(safe-area-inset-right, 0px));
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  width: 132px; height: 150px;
+  border-radius: var(--r-card, 16px);
+  background: color-mix(in srgb, var(--card) 60%, transparent);
+  backdrop-filter: saturate(140%) blur(12px);
+  -webkit-backdrop-filter: saturate(140%) blur(12px);
+  box-shadow: var(--shadow-glass, 0 18px 40px rgba(120, 72, 44, .14));
+  animation: dockIn .45s cubic-bezier(.22, .7, .3, 1);
+  transition: opacity .35s ease;
+}
+.hero-robot.docked canvas { animation: none; opacity: 1; }
+/* スクロール中・「これから」を見守っている間は控えめに */
+.hero-robot.docked.is-scrolling { opacity: .4; }
+.hero-robot.docked.watching { opacity: .6; }
+@keyframes dockIn {
+  from { opacity: 0; transform: translateY(16px) scale(.92); }
+  to   { opacity: 1; transform: none; }
+}
+@media (max-width: 760px) {
+  .fx .hero .hero-robot.docked { width: 76px; height: 86px; right: calc(12px + env(safe-area-inset-right, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-robot canvas { animation: none; opacity: 1; }
+  .hero-robot.docked { animation: none; transition: none; }
+}

@@ -1,0 +1,84 @@
+/* ===========================================================
+   素材のルール：紙・光・ガラス
+   styles.css のあとに読み込み、見た目の言語をそろえる層。
+
+   紙   … 文章とカード。平ら・細い罫線・影なし。角丸 16px（写真は 12px）
+   光   … 背景の雰囲気だけ。淡いテラコッタとくすみブルーの、ぼけた光の玉。動かない
+   ガラス … 応えてくれるものだけ（ヒーローのナビ、メニュー、「これから」の3D）。影はここだけ
+   光源 … いつも左上（書斎の窓）
+   =========================================================== */
+
+:root {
+  /* 角丸は3段階＋ピル */
+  --r-ui: 8px;        /* 小さな操作部品 */
+  --r-media: 12px;    /* 写真・図 */
+  --r-card: 16px;     /* カード・舞台 */
+  --r-pill: 999px;    /* タグ・ボタン */
+  --radius: var(--r-ui);
+
+  /* 光（ヒーローの光と同じ2色） */
+  --light-warm: #EDB396;
+  --light-cool: #B7C5D2;
+
+  /* 影はガラスだけ。色はインクブラウン系 */
+  --shadow-glass: 0 18px 40px rgba(120, 72, 44, .14), 0 1px 0 rgba(255, 255, 255, .6) inset;
+}
+
+/* ---------- 紙：カードの角丸をそろえ、影を持たせない ---------- */
+.thesis-feature,
+.strength,
+.link-card,
+.illus-frame { border-radius: var(--r-card); box-shadow: none; }
+.pull-quote { border-radius: 0 var(--r-card) var(--r-card) 0; }
+.photo-frame,
+.lightbox-img { border-radius: var(--r-media); }
+.vision-stage { border-radius: var(--r-card); }
+
+/* タグはすべてピルに（chips は角ばっていた） */
+.chips li,
+.strength-tag { border-radius: var(--r-pill); }
+
+/* 紙のカードは浮かせない（ホバーは罫線の色だけ） */
+a.link-card:hover { transform: none; }
+
+/* ---------- ガラス：開くメニューも同じ素材に ---------- */
+.nav-menu {
+  border-radius: var(--r-card);
+  background: color-mix(in srgb, var(--card) 78%, transparent);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  box-shadow: var(--shadow-glass);
+}
+.nav-menu a { border-radius: var(--r-ui); }
+
+/* ---------- 光：装飾は「ぼけた光の玉」だけにする ---------- */
+/* 平面の線・点・リング（別の言語）は使わない */
+.deco .ring-accent,
+.deco .ring-blue,
+.deco .dot-accent,
+.deco .dot-blue,
+.thesis-art .blob-accent { display: none; }
+.deco .blob-accent { fill: var(--light-warm); opacity: .55; }
+.deco .blob-blue   { fill: var(--light-cool); opacity: .5; }
+.deco svg { filter: blur(30px); }
+/* 光は動かない（動く主役はヒーローと「これから」だけ） */
+.deco,
+.deco * { animation: none !important; }
+/* 連絡先（インクの地）では、同じ光が暖かく灯る */
+.site-footer .deco .blob-accent { opacity: .32; }
+
+/* ---------- 紙の粒子：ページ全体にごく薄く ---------- */
+/* ヒーローの光の粒子と同じ質感を、すべての面に */
+body::after {
+  content: "";
+  position: fixed; inset: 0;
+  z-index: 90; pointer-events: none;
+  opacity: .05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .17  0 0 0 0 .14  0 0 0 0 .12  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ---------- イラストのロボット（ヒーローのロボットと同じ顔） ---------- */
+.ill-eye   { fill: #3A302A; }
+.ill-brow  { fill: none; stroke: #3A302A; stroke-width: 2.4; stroke-linecap: round; }
+.ill-cheek { fill: #F29A8E; opacity: .7; }
