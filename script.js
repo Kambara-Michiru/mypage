@@ -160,16 +160,34 @@
     var lbImg = lb.querySelector('.lightbox-img');
     var lbCap = lb.querySelector('.lightbox-cap');
     var lbClose = lb.querySelector('.lightbox-close');
+    var lbPrev = lb.querySelector('.lightbox-prev');
+    var lbNext = lb.querySelector('.lightbox-next');
     var lastFocused = null;
+    var group = [];   // 同じ data-group の写真を前後に送れる
+    var idx = 0;
 
-    function openLightbox(frame) {
+    function show(frame) {
       var img = frame.querySelector('img');
       var figcap = frame.parentElement.querySelector('figcaption');
-      lastFocused = document.activeElement;
-
+      var cap = figcap ? figcap.textContent.trim() : '';
       lbImg.src = frame.getAttribute('data-full') || img.src;
       lbImg.alt = img.alt || '';
-      lbCap.textContent = figcap ? figcap.textContent.trim() : '';
+      lbCap.textContent = group.length > 1 ? cap + '（' + (idx + 1) + ' / ' + group.length + '）' : cap;
+      lbPrev.hidden = lbNext.hidden = group.length < 2;
+    }
+
+    function step(d) {
+      if (group.length < 2) return;
+      idx = (idx + d + group.length) % group.length;
+      show(group[idx]);
+    }
+
+    function openLightbox(frame) {
+      var g = frame.getAttribute('data-group');
+      group = g ? Array.prototype.slice.call(document.querySelectorAll('.photo-frame[data-group="' + g + '"]')) : [frame];
+      idx = Math.max(0, group.indexOf(frame));
+      lastFocused = document.activeElement;
+      show(frame);
 
       lb.hidden = false;
       document.body.style.overflow = 'hidden';
@@ -191,12 +209,25 @@
     frames.forEach(function (frame) {
       frame.addEventListener('click', function () { openLightbox(frame); });
     });
+    // 「続きのページを見る」：グループの指定ページから開く
+    document.querySelectorAll('[data-open-group]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var list = document.querySelectorAll('.photo-frame[data-group="' + btn.getAttribute('data-open-group') + '"]');
+        var target = list[Number(btn.getAttribute('data-start')) || 0];
+        if (target) openLightbox(target);
+      });
+    });
     lbClose.addEventListener('click', closeLightbox);
+    lbPrev.addEventListener('click', function () { step(-1); });
+    lbNext.addEventListener('click', function () { step(1); });
     lb.addEventListener('click', function (e) {
       if (e.target === lb || e.target.classList.contains('lightbox-figure')) closeLightbox();
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && !lb.hidden) closeLightbox();
+      if (lb.hidden) return;
+      if (e.key === 'Escape') closeLightbox();
+      else if (e.key === 'ArrowLeft') step(-1);
+      else if (e.key === 'ArrowRight') step(1);
     });
   }
 
