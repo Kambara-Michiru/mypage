@@ -520,6 +520,10 @@ ul.strength-evidence > li::before {
 
 .photo figcaption { margin-top: var(--s2); font-size: .85rem; color: var(--ink-soft); }
 
+/* タイムライン内のスクリーンショット（16:10 のまま見せる） */
+.tl-shot { margin: var(--s4) 0; max-width: 560px; }
+.tl-shot .photo-frame img { aspect-ratio: 16 / 10; }
+
 /* ===== lightbox ===== */
 .lightbox {
   position: fixed; inset: 0; z-index: 200;
