@@ -523,6 +523,9 @@ ul.strength-evidence > li::before {
 /* タイムライン内のスクリーンショット（16:10 のまま見せる） */
 .tl-shot { margin: var(--s4) 0; max-width: 560px; }
 .tl-shot .photo-frame img { aspect-ratio: 16 / 10; }
+.tl-shots { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); margin: var(--s4) 0; max-width: 760px; align-items: start; }
+.tl-shots .photo-frame img { aspect-ratio: 2 / 1; }
+@media (max-width: 640px) { .tl-shots { grid-template-columns: 1fr; } }
 
 /* ===== lightbox ===== */
 .lightbox {
