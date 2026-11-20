@@ -525,14 +525,14 @@ ul.strength-evidence > li::before {
 .tl-shot .photo-frame img,
 .tl-shots .photo-frame img,
 .zine-pages .photo-frame img { aspect-ratio: auto; height: auto; }   /* 切らずに全体を見せる */
-.zine-pages { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s3); margin: var(--s4) 0 var(--s3); max-width: 480px; align-items: start; }
+.zine-pages { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s2); margin: var(--s3) 0 var(--s2); max-width: 260px; align-items: start; }
 .zine-more {
-  display: inline-flex; align-items: center; gap: var(--s2); margin: 0 0 var(--s4); padding: .55em 1.1em;
+  display: inline-flex; align-items: center; gap: var(--s2); margin: 0 0 var(--s3); padding: .4em .9em;
   border: 1px solid var(--line); border-radius: 999px; background: var(--card); color: var(--accent-deep);
-  font: inherit; font-size: .9rem; cursor: pointer; transition: border-color .2s, transform .2s;
+  font: inherit; font-size: .8rem; cursor: pointer; transition: border-color .2s, transform .2s;
 }
 .zine-more:hover { border-color: var(--accent-deep); transform: translateX(2px); }
-.zine-pages .photo figcaption { font-size: .75rem; line-height: 1.5; }
+.zine-pages .photo figcaption { font-size: .68rem; line-height: 1.4; }
 .tl-shots { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); margin: var(--s4) 0; max-width: 760px; align-items: start; }
 @media (max-width: 640px) { .tl-shots { grid-template-columns: 1fr; } }
 
@@ -569,7 +569,7 @@ ul.strength-evidence > li::before {
 .lightbox-nav[hidden] { display: none; }
 .lightbox-prev { left: var(--s4); }
 .lightbox-next { right: var(--s4); }
-@media (max-width: 640px) { .lightbox-nav { top: auto; bottom: var(--s4); transform: none; } }
+@media (max-width: 640px) { .lightbox-nav { top: auto; bottom: var(--s4); transform: none; width: 44px; height: 44px; } .lightbox-prev { left: calc(50% - 60px); } .lightbox-next { right: calc(50% - 60px); } .lightbox-cap { margin-bottom: 56px; } }
 .lightbox-close:hover { background: color-mix(in srgb, #fff 24%, transparent); }
 
 /* ===== timeline ===== */
