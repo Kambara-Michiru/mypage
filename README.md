@@ -143,4 +143,4 @@ Node.js 20 以上。
 2. `main` に push すると自動でビルド・公開されます。
 3. `https://<username>.github.io/mypage/` で公開（`vite.config.ts` の `base: './'` によりサブパスでもそのまま動きます）。
 
-> 公開URLを確定したら、`index.html` の `<link rel="canonical">` と OGP の `og:image`（現状 `https://example.github.io/` のプレースホルダ）を実URLに更新してください。
+> 公開URLは `https://kambara-michiru.github.io/mypage/` で設定済みです（`canonical` / `og:url` / `og:image`）。URLを変える場合は `index.html` の該当箇所を更新してください。
